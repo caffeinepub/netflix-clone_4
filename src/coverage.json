@@ -1,0 +1,107 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-21T01:05:21.050Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 7,
+    "implemented": 6,
+    "items": [
+      {
+        "id": "REQ-24",
+        "summary": "Create a manifest.json file in the frontend/public directory with app metadata including name 'Saanufox', short_name, description 'Modern video streaming platform', theme_color matching the dark cinematic theme, background_color, display mode 'standalone', start_url, and icons array with multiple sizes (192x192, 512x512) for home screen installation",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/manifest.json"
+        ],
+        "matchedFiles": [
+          "frontend/public/manifest.json"
+        ]
+      },
+      {
+        "id": "REQ-25",
+        "summary": "Link the manifest.json file in frontend/index.html by adding a <link rel='manifest' href='/manifest.json'> tag in the <head> section",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/index.html"
+        ]
+      },
+      {
+        "id": "REQ-26",
+        "summary": "Add theme-color meta tag to frontend/index.html matching the manifest theme_color for consistent browser UI theming",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/index.html"
+        ]
+      },
+      {
+        "id": "REQ-27",
+        "summary": "Create a service worker file (sw.js) in frontend/public that implements caching strategies for offline support, including cache-first strategy for static assets (JS, CSS, images) and network-first strategy for API calls, with proper cache versioning and cleanup",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/sw.js"
+        ],
+        "matchedFiles": [
+          "frontend/public/sw.js"
+        ]
+      },
+      {
+        "id": "REQ-28",
+        "summary": "Register the service worker in frontend/src/main.tsx after the React app mounts, with proper error handling and console logging for registration success/failure",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/main.tsx"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-29",
+        "summary": "Create an offline fallback page (offline.html) in frontend/public that displays when the user is offline and requests uncached content, with basic styling matching the app theme and a message indicating no internet connection",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/offline.html"
+        ],
+        "matchedFiles": [
+          "frontend/public/offline.html"
+        ]
+      },
+      {
+        "id": "REQ-30",
+        "summary": "Add apple-touch-icon meta tags to frontend/index.html for iOS home screen installation support with appropriate icon sizes",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/index.html"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.html",
+    "frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
+    "frontend/public/assets/generated/pwa-icon-192.dim_192x192.png",
+    "frontend/public/assets/generated/pwa-icon-512.dim_512x512.png",
+    "frontend/public/manifest.json",
+    "frontend/public/offline.html",
+    "frontend/public/sw.js",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

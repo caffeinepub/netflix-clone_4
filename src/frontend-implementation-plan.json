@@ -1,0 +1,122 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Convert Saanufox to Progressive Web App with offline support and home screen installation",
+  "requirements": [
+    {
+      "id": "REQ-24",
+      "summary": "Create PWA manifest.json with app metadata, theme colors, and icon definitions for home screen installation",
+      "acceptanceCriteria": [
+        "manifest.json exists in frontend/public directory",
+        "Manifest includes all required PWA fields (name, short_name, description, icons, theme_color, display)",
+        "Theme colors match the existing dark cinematic design",
+        "Icons array includes at least 192x192 and 512x512 sizes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/manifest.json",
+          "operation": "create",
+          "description": "Create PWA manifest file with name 'Saanufox', short_name 'Saanufox', description 'Modern video streaming platform', display 'standalone', start_url '/', and theme_color/background_color matching the dark cinematic theme from frontend/index.css. Include icons array referencing frontend/public/assets/generated/pwa-icon-192.dim_192x192.png and frontend/public/assets/generated/pwa-icon-512.dim_512x512.png with appropriate sizes and types."
+        }
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "summary": "Link manifest.json in index.html for browser PWA recognition",
+      "acceptanceCriteria": [
+        "Manifest link tag is present in index.html head section",
+        "Browser recognizes the app as installable"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add <link rel='manifest' href='/manifest.json'> tag in the <head> section to enable PWA manifest discovery by browsers."
+        }
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "summary": "Add theme-color meta tag to index.html for consistent browser UI theming",
+      "acceptanceCriteria": [
+        "theme-color meta tag is present in index.html",
+        "Color value matches manifest.json theme_color"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add <meta name='theme-color' content='[color value]'> tag in the <head> section with color matching the manifest.json theme_color and the dark cinematic theme from frontend/index.css."
+        }
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "summary": "Create service worker with caching strategies for offline support",
+      "acceptanceCriteria": [
+        "Service worker file exists in frontend/public",
+        "Implements install, activate, and fetch event handlers",
+        "Caches static assets during install",
+        "Provides fallback responses when offline",
+        "Implements cache versioning and old cache cleanup"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/sw.js",
+          "operation": "create",
+          "description": "Create service worker implementing install event (cache static assets including JS, CSS, generated images from frontend/public/assets/generated/, and offline.html), activate event (clean up old cache versions), and fetch event (cache-first strategy for static assets, network-first for API calls with fallback to offline.html for navigation requests). Include cache versioning with a version identifier and logic to delete outdated caches. Ensure the service worker does not interfere with Internet Identity authentication flows by excluding identity-related URLs from caching."
+        }
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "summary": "Register service worker in main.tsx after React app mounts",
+      "acceptanceCriteria": [
+        "Service worker registration code is added to main.tsx",
+        "Registration only occurs in production builds",
+        "Handles registration errors gracefully",
+        "Logs registration status to console"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Add service worker registration code after the React app renders. Check if 'serviceWorker' is supported in navigator and if process.env.NODE_ENV is 'production' before registering '/sw.js'. Wrap registration in try-catch block, log success message on successful registration, and log error message on failure. Use window.addEventListener('load', ...) to ensure registration happens after page load."
+        }
+      ]
+    },
+    {
+      "id": "REQ-29",
+      "summary": "Create offline fallback page with themed styling and offline message",
+      "acceptanceCriteria": [
+        "offline.html exists in frontend/public",
+        "Page displays clear offline message",
+        "Styling matches app theme",
+        "Service worker serves this page for failed network requests when offline"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/offline.html",
+          "operation": "create",
+          "description": "Create standalone HTML page with inline CSS matching the dark cinematic theme from frontend/index.css. Display a centered message indicating 'No internet connection' or similar offline status, with the Saanufox branding. Include basic styling for typography, colors (using the dark theme palette), and layout without external dependencies. The service worker will serve this page for failed network requests when the user is offline."
+        }
+      ]
+    },
+    {
+      "id": "REQ-30",
+      "summary": "Add apple-touch-icon meta tags for iOS home screen installation support",
+      "acceptanceCriteria": [
+        "apple-touch-icon link tags are present in index.html",
+        "Icons support common iOS sizes (180x180)",
+        "iOS devices can add app to home screen"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add <link rel='apple-touch-icon' href='/assets/generated/apple-touch-icon.dim_180x180.png'> tag in the <head> section referencing the generated iOS icon at frontend/public/assets/generated/apple-touch-icon.dim_180x180.png to enable iOS home screen installation."
+        }
+      ]
+    }
+  ]
+}
