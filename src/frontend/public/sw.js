@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'saanufox-v2-rebuild';
+const CACHE_VERSION = 'saanufox-v3-mainnet';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
@@ -21,7 +21,7 @@ const STATIC_ASSETS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing v2-rebuild...');
+  console.log('[Service Worker] Installing v3-mainnet...');
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
       console.log('[Service Worker] Caching static assets');
@@ -33,7 +33,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating v2-rebuild...');
+  console.log('[Service Worker] Activating v3-mainnet...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -54,10 +54,13 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip Internet Identity and authentication URLs
+  // Skip Internet Identity and IC mainnet URLs
   if (
     url.hostname.includes('identity.ic0.app') ||
     url.hostname.includes('identity.internetcomputer.org') ||
+    url.hostname.includes('ic0.app') ||
+    url.hostname.includes('icp0.io') ||
+    url.hostname.includes('raw.icp0.io') ||
     url.pathname.includes('/.well-known/') ||
     request.url.includes('canister')
   ) {

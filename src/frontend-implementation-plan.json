@@ -1,216 +1,33 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Frontend rebuild for Saanufox streaming platform fresh deployment",
+  "title": "Deploy Saanufox to Production Mainnet",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Update frontend configuration and environment files to support new canister deployment and resolve canister ID resolution errors",
+      "summary": "Deploy the current application (Version 17) to Internet Computer mainnet with no code changes",
       "acceptanceCriteria": [
-        "Application deploys successfully with new backend and frontend canister IDs",
-        "Frontend loads without 'Canister ID Not Resolved' error",
-        "All existing features remain functional after rebuild (video upload, playback, authentication, favorites, watchlist, profile, admin analytics)"
+        "Application is successfully deployed to Internet Computer mainnet",
+        "All backend canisters are running on mainnet",
+        "Frontend is accessible via mainnet canister URL",
+        "Service worker and PWA features are functional in production",
+        "All existing features (video streaming, authentication, favorites, watchlist) work correctly in production environment"
       ],
       "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Verify PWA meta tags, manifest link, apple-touch-icon reference using frontend/public/assets/generated/apple-touch-icon.dim_180x180.png, and root div are correctly configured for new deployment. Ensure all asset paths remain valid after canister ID regeneration."
-        },
-        {
-          "path": "frontend/src/main.tsx",
-          "operation": "modify",
-          "description": "Verify React Query client configuration and Internet Identity provider setup remain intact. Ensure the application entry point properly initializes with new canister IDs without requiring code changes (configuration is handled externally via dfx.json)."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Verify TanStack Router configuration with all 10 routes (browse, watch, search, category, favorites, watchlist, profile, settings, admin upload, analytics) remains functional. Ensure dark theme provider, layout wrapper, and profile setup modal are properly wired after redeployment."
-        },
-        {
-          "path": "frontend/public/manifest.json",
-          "operation": "modify",
-          "description": "Verify PWA manifest references correct icon paths: frontend/public/assets/generated/pwa-icon-192.dim_192x192.png and frontend/public/assets/generated/pwa-icon-512.dim_512x512.png. Ensure theme colors, display mode, and app metadata remain valid after fresh rebuild."
-        },
         {
           "path": "frontend/public/sw.js",
           "operation": "modify",
-          "description": "Verify service worker cache strategy (cache-first for static assets, network-first for API calls) remains functional with new canister IDs. Update cache version identifier to force cache refresh on first load after redeployment. Ensure offline fallback to frontend/public/offline.html works correctly."
-        },
-        {
-          "path": "frontend/public/offline.html",
-          "operation": "modify",
-          "description": "Verify standalone offline fallback page with Saanufox branding remains accessible and properly styled. Ensure retry button functionality works with new canister endpoints."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Verify all existing video streaming features work correctly in the frontend after fresh rebuild",
-      "acceptanceCriteria": [
-        "Video upload works for both YouTube URLs and file uploads",
-        "Video playback functions correctly for both YouTube embeds and blob videos",
-        "User authentication via Internet Identity works",
-        "Favorites and watchlist add/remove operations function correctly",
-        "User profile setup and settings update work",
-        "Admin analytics display registered user count",
-        "PWA features (manifest, service worker, offline page) remain functional"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useActor.ts",
-          "operation": "modify",
-          "description": "Verify backend actor instance creation and authentication flow with new canister IDs. Ensure automatic query invalidation and refetching works correctly when actor changes. Confirm Internet Identity integration remains functional without requiring modifications (immutable constraint)."
+          "description": "Verify service worker cache strategy is configured for production mainnet deployment with appropriate cache version and asset URLs. Ensure cache-first strategy for static assets and network-first for API calls remain functional in production environment. No code changes required unless environment-specific adjustments are needed."
         },
         {
           "path": "frontend/src/hooks/useInternetIdentity.ts",
           "operation": "modify",
-          "description": "Verify Internet Identity authentication context and login/logout functionality with new deployment. Ensure identity persistence across page reloads works correctly. Confirm AuthClient configuration remains valid (immutable constraint)."
+          "description": "Verify Internet Identity authentication is configured for mainnet environment. Ensure the AuthClient is using production Internet Identity canister URLs and delegation settings are appropriate for mainnet. No code changes required unless environment configuration needs adjustment."
         },
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/public/manifest.json",
           "operation": "modify",
-          "description": "Verify all React Query hooks (user profiles, admin checks, video CRUD, watchlist, favorites, search) properly interact with the new backend canister. Ensure query dependencies on authenticated actor instance work correctly. Use the blob-storage component via ExternalBlob class for video file operations. Verify component usage instructions before implementing any changes."
-        },
-        {
-          "path": "frontend/src/components/LoginButton.tsx",
-          "operation": "modify",
-          "description": "Verify authentication button handles Internet Identity login/logout correctly with new canister deployment. Ensure loading states, error handling for 'User is already authenticated', and query cache clearing on logout work properly. Use the authorization component for authentication state management."
-        },
-        {
-          "path": "frontend/src/components/ProfileSetupModal.tsx",
-          "operation": "modify",
-          "description": "Verify profile setup modal prompts new authenticated users correctly after fresh deployment. Ensure it blocks interaction until profile name is entered and properly uses getCallerUserProfile and saveCallerUserProfile backend methods. Use the authorization component for profile management."
-        },
-        {
-          "path": "frontend/src/pages/AdminUpload.tsx",
-          "operation": "modify",
-          "description": "Verify admin video upload page works for both YouTube URL and file upload after redeployment. Ensure form validation, file processing with ExternalBlob from blob-storage component, progress tracking, and video metadata submission via createVideo backend method function correctly. Use the authorization component to enforce admin-only access. Verify component usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/Analytics.tsx",
-          "operation": "modify",
-          "description": "Verify analytics page displays total registered user count from getUserCount backend method after fresh rebuild. Ensure authentication requirement, loading states, and error alerts work correctly. Use the authorization component to verify admin or user access."
-        },
-        {
-          "path": "frontend/src/pages/Browse.tsx",
-          "operation": "modify",
-          "description": "Verify main browsing page displays all videos grouped by category and genre using getAllVideos backend method. Ensure hero banner using frontend/public/assets/generated/hero-banner.dim_1920x400.png and category filter work correctly after redeployment."
-        },
-        {
-          "path": "frontend/src/pages/Watch.tsx",
-          "operation": "modify",
-          "description": "Verify video player page displays single video with metadata from getVideoMeta backend method. Ensure VideoPlayer component handles both YouTube embeds and blob sources correctly. Verify action buttons (favorite via markFavorite/unmarkFavorite, watchlist via addToWatchlist/removeFromWatchlist, download via getVideoDownloadLink) work for authenticated users after fresh rebuild. Use the blob-storage component for blob video playback."
-        },
-        {
-          "path": "frontend/src/pages/Favorites.tsx",
-          "operation": "modify",
-          "description": "Verify favorites page displays authenticated user's favorite videos from getUserFavorites backend method. Ensure login prompt and empty state work correctly after redeployment. Use the authorization component to enforce authentication."
-        },
-        {
-          "path": "frontend/src/pages/Watchlist.tsx",
-          "operation": "modify",
-          "description": "Verify watchlist page displays authenticated user's watchlist videos from getUserWatchlist backend method. Ensure login prompt and empty state work correctly after redeployment. Use the authorization component to enforce authentication."
-        },
-        {
-          "path": "frontend/src/pages/Profile.tsx",
-          "operation": "modify",
-          "description": "Verify profile page displays user name from getCallerUserProfile backend method and Internet Identity principal. Ensure authentication requirement and link to settings page work after fresh rebuild. Use the authorization component for profile access."
-        },
-        {
-          "path": "frontend/src/pages/Settings.tsx",
-          "operation": "modify",
-          "description": "Verify settings page allows authenticated users to update profile name via saveCallerUserProfile backend method. Ensure form validation and toast notifications work correctly after redeployment. Use the authorization component to enforce authentication."
-        },
-        {
-          "path": "frontend/src/pages/Search.tsx",
-          "operation": "modify",
-          "description": "Verify search page queries videos using searchVideos backend method with debounced search bar (300ms delay). Ensure results display in grid with loading and empty states after fresh rebuild."
-        },
-        {
-          "path": "frontend/src/pages/Category.tsx",
-          "operation": "modify",
-          "description": "Verify category page filters videos by category from URL params using getVideosByCategory backend method. Ensure category filter component and loading state work correctly after redeployment."
-        },
-        {
-          "path": "frontend/src/components/VideoPlayer.tsx",
-          "operation": "modify",
-          "description": "Verify video player component renders YouTube iframe embeds or HTML5 video elements for blob sources correctly with new canister deployment. Ensure loading and error states work properly. Use the blob-storage component for blob video streaming via ExternalBlob.getDirectURL()."
-        },
-        {
-          "path": "frontend/src/components/VideoCard.tsx",
-          "operation": "modify",
-          "description": "Verify video thumbnail card displays title, metadata, and action buttons (play, watchlist, favorite, download) for authenticated users. Ensure hover effects and navigation work correctly after fresh rebuild. Use thumbnail images from frontend/public/assets/generated/video-thumb-*.dim_400x225.png as fallback placeholders if needed."
-        },
-        {
-          "path": "frontend/src/components/VideoGrid.tsx",
-          "operation": "modify",
-          "description": "Verify responsive grid layout displays VideoCard components correctly after redeployment. Ensure 'no videos found' message appears when appropriate."
-        },
-        {
-          "path": "frontend/src/components/VideoRow.tsx",
-          "operation": "modify",
-          "description": "Verify horizontal scrollable row with left/right navigation arrows displays video cards correctly. Ensure scroll state management and arrow visibility work after fresh rebuild."
-        },
-        {
-          "path": "frontend/src/components/HeroBanner.tsx",
-          "operation": "modify",
-          "description": "Verify hero banner displays first video from catalog with title, genre, category, and action buttons (Play and More Info). Ensure background image frontend/public/assets/generated/hero-banner.dim_1920x400.png or frontend/public/assets/generated/netflix-hero-bg.dim_1920x1080.png loads correctly after redeployment."
-        },
-        {
-          "path": "frontend/src/components/CategoryFilter.tsx",
-          "operation": "modify",
-          "description": "Verify category navigation renders buttons for six predefined categories (Movies, Series, Documentaries, Animation, Comedy, Sci-Fi) with active state highlighting and TanStack Router links working after fresh rebuild."
-        },
-        {
-          "path": "frontend/src/components/FavoriteButton.tsx",
-          "operation": "modify",
-          "description": "Verify favorite button toggles video favorite status via markFavorite and unmarkFavorite backend methods. Ensure heart icon visual feedback (filled for favorited) works correctly after redeployment. Use the authorization component to ensure user authentication."
-        },
-        {
-          "path": "frontend/src/components/WatchlistButton.tsx",
-          "operation": "modify",
-          "description": "Verify watchlist button toggles videos in/out of watchlist via addToWatchlist and removeFromWatchlist backend methods. Ensure React Query mutations and watchlist state work correctly after fresh rebuild. Use the authorization component to ensure user authentication."
-        },
-        {
-          "path": "frontend/src/components/DownloadButton.tsx",
-          "operation": "modify",
-          "description": "Verify download button allows authenticated users to download videos using getVideoDownloadLink backend method for blob videos or opens YouTube URLs in new tab. Ensure proper handling of both video sources after redeployment. Use the blob-storage component for blob download functionality."
-        },
-        {
-          "path": "frontend/src/components/SearchBar.tsx",
-          "operation": "modify",
-          "description": "Verify search input component with 300ms debounced query handling works correctly after fresh rebuild. Ensure search icon displays properly."
-        },
-        {
-          "path": "frontend/src/components/Layout.tsx",
-          "operation": "modify",
-          "description": "Verify main layout wrapper with fixed header navigation, logo, and conditional menu items based on authentication status works after redeployment. Ensure navigation links to all pages remain functional."
-        },
-        {
-          "path": "frontend/src/utils/youtubeHelpers.ts",
-          "operation": "modify",
-          "description": "Verify utility functions for YouTube video ID extraction, URL validation, and thumbnail/embed URL generation work correctly after fresh rebuild. Ensure support for various YouTube URL formats remains intact."
-        },
-        {
-          "path": "frontend/src/utils/fileHelpers.ts",
-          "operation": "modify",
-          "description": "Verify functions to sanitize video titles into filesystem-safe filenames and generate download filenames work correctly after redeployment. Ensure invalid character removal and length limiting remain functional."
-        },
-        {
-          "path": "frontend/src/utils/urlParams.ts",
-          "operation": "modify",
-          "description": "Verify utility functions for extracting URL parameters from query strings or hash-based routing work correctly after fresh rebuild. Ensure sessionStorage persistence and parameter clearing functions remain intact."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Verify global Tailwind CSS configuration with custom CSS variables for theming (light/dark modes), Netflix-style design tokens, and utility classes work correctly after redeployment. Ensure OKLCH color space definitions remain intact."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Verify Tailwind CSS configuration with custom color scheme using OKLCH color space, Netflix-themed styling, custom animations, and plugins (typography, container queries, animations) remains functional after fresh rebuild."
+          "description": "Verify PWA manifest references correct mainnet URLs and icon paths. Ensure start_url and scope are set appropriately for production deployment. No code changes required unless production URLs differ from current configuration."
         }
       ]
     }

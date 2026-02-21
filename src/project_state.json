@@ -1,45 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Saanufox Netflix-style video streaming platform with video upload, playback, user authentication, and PWA support",
-  "architectural_notes": [
-    "Internet Computer (ICP) deployment with frontend and backend canisters",
-    "Internet Identity authentication for user login",
-    "PWA (Progressive Web App) support for mobile installation",
-    "Netflix-style dark theme UI with horizontal scrolling rows",
-    "Video upload supports both YouTube links and file uploads",
-    "All authenticated users have upload permissions (admin-only restriction removed)",
-    "Video playback with streaming and download capabilities",
-    "Categories, search, and browse functionality for video discovery"
-  ],
-  "known_issues": [
-    "Canister ID Not Resolved error occurring after deployment - requires fresh rebuild with proper backend initialization"
-  ],
-  "isFixRequest": true,
-  "existing_features": [
-    {
-      "id": "feature-perform-a-complete-fresh-rebuild-of-the-entire-saanufox-video-streaming-platform-with-new-canister-ids-to-resolve-the-persistent-canister-id-not-resolved-error-that-occurs-after-deployment",
-      "title": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    }
-  ],
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [],
   "new_feature_requests": [
     {
-      "id": "AR-2",
-      "summary": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
+      "id": "AR-1",
+      "summary": "Deploy the current application build (Version 17) to production on Internet Computer mainnet",
       "reqIds": [
-        "REQ-2"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
-      "reqIds": [
-        "REQ-3"
+        "REQ-1"
       ],
       "status": "pending"
     }

@@ -1,11 +1,13 @@
 import { Link } from '@tanstack/react-router';
-import { Search, Home, Heart, Bookmark, Upload, User, Settings, BarChart3 } from 'lucide-react';
+import { Search, Home, Heart, Bookmark, Upload, User, Settings } from 'lucide-react';
 import LoginButton from './LoginButton';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../hooks/useQueries';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { identity } = useInternetIdentity();
   const isAuthenticated = !!identity;
+  const { data: isAdmin, isLoading: isAdminLoading } = useIsCallerAdmin();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -49,13 +51,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       Watchlist
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                     </Link>
-                    <Link
-                      to="/analytics"
-                      className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
-                    >
-                      Analytics
-                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
-                    </Link>
+                    {!isAdminLoading && isAdmin && (
+                      <Link
+                        to="/admin/upload"
+                        className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
+                      >
+                        Upload
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
+                      </Link>
+                    )}
                   </>
                 )}
               </nav>
@@ -66,12 +70,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               {isAuthenticated && (
                 <div className="flex items-center gap-3">
-                  <Link to="/analytics" className="md:hidden">
-                    <BarChart3 className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
-                  </Link>
-                  <Link to="/admin/upload">
-                    <Upload className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
-                  </Link>
+                  {!isAdminLoading && isAdmin && (
+                    <Link to="/admin/upload">
+                      <Upload className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+                    </Link>
+                  )}
                   <Link to="/profile">
                     <User className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
                   </Link>

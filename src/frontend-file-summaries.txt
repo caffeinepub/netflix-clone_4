@@ -1,6 +1,6 @@
 {
-  "frontend/src/App.tsx": "Main application component with TanStack Router setup including all routes (browse, watch, search, category, favorites, watchlist, profile, settings, admin upload, analytics) wrapped with ThemeProvider, Layout, and Toaster.",
-  "frontend/src/components/Layout.tsx": "Netflix-style layout with fixed black header featuring SAANUFOX branding in red, horizontal navigation including Analytics link for authenticated users, icon-based user controls, and minimalist footer with attribution.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup including all routes (browse, watch, search, category, favorites, watchlist, profile, settings, admin upload) wrapped with ThemeProvider, Layout, and Toaster - Analytics route removed.",
+  "frontend/src/components/Layout.tsx": "Netflix-style layout with fixed black header featuring SAANUFOX branding in red, horizontal navigation with admin-only Upload link (visible only when useIsCallerAdmin returns true), icon-based user controls, and minimalist footer with attribution - Analytics navigation removed from both desktop and mobile menus.",
   "frontend/src/components/LoginButton.tsx": "Authentication button component using Internet Identity hook to handle login/logout with loading states and query cache clearing.",
   "frontend/src/components/ProfileSetupModal.tsx": "Modal dialog that prompts new users to enter their name on first login, with proper actor dependency handling to prevent flash.",
   "frontend/src/components/VideoCard.tsx": "Netflix-style video card with hover scale effect, animated overlay showing play button and metadata, favorite/watchlist/download buttons for authenticated users, and smooth transitions.",
@@ -20,10 +20,10 @@
   "frontend/src/index.css": "Global styles with Netflix-inspired design system using pure black background (#000000), Netflix red accent (oklch(0.50 0.24 29)), white text, and custom utilities for horizontal scrolling and hover effects.",
   "frontend/tailwind.config.js": "Tailwind configuration extended with Netflix-style design tokens including netflix-red color, netflix shadow utilities, custom spacing, and fade-in animations for smooth UI transitions.",
   "frontend/src/utils/youtubeHelpers.ts": "Utility functions for YouTube URL parsing with improved regex and URL parsing to handle various YouTube URL formats including query parameters, extracting video IDs, and generating embed/thumbnail URLs.",
-  "frontend/src/pages/AdminUpload.tsx": "Video upload page with Netflix-style dark theme, support for both YouTube URLs and file uploads with progress tracking, proper ExternalBlob usage, and comprehensive error handling.",
+  "frontend/src/pages/AdminUpload.tsx": "Admin-only video upload page with Netflix-style dark theme, admin role verification using useIsCallerAdmin hook, access denied screen for non-admins, support for both YouTube URLs and file uploads with progress tracking, proper ExternalBlob usage, and comprehensive error handling.",
   "frontend/public/manifest.json": "PWA manifest file defining app metadata, icons, theme colors, and display mode for home screen installation.",
   "frontend/index.html": "HTML entry point with PWA meta tags including manifest link, theme-color, and apple-touch-icon for iOS support.",
-  "frontend/public/sw.js": "Service worker with updated cache version (v2-rebuild) to force cache refresh on fresh deployment, implementing cache-first strategy for static assets, network-first for API calls, and offline fallback support while excluding Internet Identity URLs.",
+  "frontend/public/sw.js": "Service worker with mainnet-specific cache version (v3-mainnet) and updated fetch event handler to properly exclude IC mainnet domains (ic0.app, icp0.io, raw.icp0.io) from caching.",
   "frontend/public/offline.html": "Standalone offline fallback page with dark cinematic theme styling, Saanufox branding, and retry button.",
   "frontend/src/main.tsx": "Application entry point with React rendering, providers setup, and service worker registration for production builds.",
   "frontend/src/pages/Profile.tsx": "User profile page with Netflix-style dark theme displaying user name and principal ID in a card layout with link to settings.",
@@ -32,5 +32,6 @@
   "frontend/src/components/VideoRow.tsx": "Horizontal scrollable row component for video categories with left/right navigation arrows, smooth scrolling behavior, and Netflix-style presentation with hover-triggered controls.",
   "frontend/src/utils/fileHelpers.ts": "Utility functions for sanitizing video titles to filesystem-safe filenames and generating proper download filenames with .mp4 extension and fallback patterns.",
   "frontend/src/components/DownloadButton.tsx": "Reusable download button component that triggers video downloads for authenticated users, handles both blob and YouTube videos with loading states, proper filename generation, and toast notifications.",
-  "frontend/src/pages/Analytics.tsx": "Netflix-style analytics page displaying total registered user count with loading states, error handling, authentication check, and gradient card design featuring the user count metric."
+  "frontend/src/pages/Analytics.tsx": "Admin-only analytics page with Netflix-style dark theme, admin role verification using useIsCallerAdmin hook, access denied screen for non-admins, displaying total registered user count with loading states, error handling, and gradient card design featuring the user count metric.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Internet Identity authentication hook configured for mainnet deployment with identity provider URL set to https://identity.ic0.app for production use."
 }

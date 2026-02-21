@@ -1,103 +1,99 @@
-import { BarChart3, Users, Loader2 } from 'lucide-react';
-import { useGetUserCount } from '../hooks/useQueries';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetUserCount, useIsCallerAdmin } from '../hooks/useQueries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import LoginButton from '../components/LoginButton';
+import { Users, Loader2, ShieldAlert } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
 
 export default function Analytics() {
   const { identity } = useInternetIdentity();
-  const isAuthenticated = !!identity;
+  const { data: isAdmin, isLoading: isAdminLoading } = useIsCallerAdmin();
+  const { data: userCount, isLoading: isCountLoading, error } = useGetUserCount();
 
-  const { data: userCount, isLoading, error } = useGetUserCount();
+  const isAuthenticated = !!identity;
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <Card className="w-full max-w-md bg-zinc-900 border-zinc-800">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-white">Authentication Required</CardTitle>
-            <CardDescription className="text-zinc-400">
-              Please login to view analytics
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <LoginButton />
-          </CardContent>
-        </Card>
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen">
+        <div className="max-w-md mx-auto text-center">
+          <Users className="w-16 h-16 mx-auto mb-4 text-white/60" />
+          <h2 className="text-2xl font-bold mb-2 text-white">Login Required</h2>
+          <p className="text-white/60 mb-6">
+            Please log in to view analytics.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAdminLoading) {
+    return (
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-netflix-red" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen">
+        <div className="max-w-md mx-auto text-center">
+          <ShieldAlert className="w-16 h-16 mx-auto mb-4 text-netflix-red" />
+          <h2 className="text-2xl font-bold mb-2 text-white">Access Denied</h2>
+          <p className="text-white/60 mb-6">
+            You do not have permission to access analytics. Only administrators can view this page.
+          </p>
+          <Link to="/">
+            <Button className="bg-netflix-red hover:bg-netflix-red/90">
+              Return to Home
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen">
+        <div className="max-w-md mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-2 text-white">Error Loading Analytics</h2>
+          <p className="text-white/60">
+            {error instanceof Error ? error.message : 'Failed to load user count'}
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 md:px-8 py-12">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <BarChart3 className="w-8 h-8 text-netflix-red" />
-            <h1 className="text-3xl md:text-4xl font-bold text-white">Analytics</h1>
-          </div>
-          <p className="text-zinc-400">Platform statistics and insights</p>
-        </div>
+    <div className="container mx-auto px-4 py-16 bg-black min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold mb-8 text-white">Analytics Dashboard</h1>
 
-        {error && (
-          <Alert variant="destructive" className="mb-6 bg-red-950/50 border-red-900">
-            <AlertDescription className="text-red-200">
-              {error instanceof Error ? error.message : 'Failed to load analytics data'}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="bg-gradient-to-br from-netflix-red/20 to-netflix-red/5 border-netflix-red/30 hover:border-netflix-red/50 transition-all">
-            <CardHeader>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
-                <Users className="w-5 h-5 text-netflix-red" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="bg-gradient-to-br from-netflix-red/20 to-netflix-red/5 border-netflix-red/30 backdrop-blur">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-white/90">
                 Total Registered Users
               </CardTitle>
-              <CardDescription className="text-zinc-400">
-                Users who have created profiles
-              </CardDescription>
+              <Users className="h-5 w-5 text-netflix-red" />
             </CardHeader>
             <CardContent>
-              {isLoading ? (
-                <div className="flex items-center gap-2 text-zinc-400">
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                  <span>Loading...</span>
+              {isCountLoading ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="w-6 h-6 animate-spin text-netflix-red" />
                 </div>
               ) : (
-                <div className="text-5xl font-bold text-white">
-                  {userCount !== undefined ? Number(userCount).toLocaleString() : '0'}
-                </div>
+                <>
+                  <div className="text-3xl font-bold text-white">
+                    {userCount !== undefined ? Number(userCount).toLocaleString() : '0'}
+                  </div>
+                  <p className="text-xs text-white/60 mt-1">
+                    Users with profiles
+                  </p>
+                </>
               )}
-            </CardContent>
-          </Card>
-
-          <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-all">
-            <CardHeader>
-              <CardTitle className="text-lg text-white">Coming Soon</CardTitle>
-              <CardDescription className="text-zinc-400">
-                More analytics features
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-zinc-600">
-                --
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-all">
-            <CardHeader>
-              <CardTitle className="text-lg text-white">Coming Soon</CardTitle>
-              <CardDescription className="text-zinc-400">
-                More analytics features
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-zinc-600">
-                --
-              </div>
             </CardContent>
           </Card>
         </div>

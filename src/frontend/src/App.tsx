@@ -11,7 +11,6 @@ import Watchlist from './pages/Watchlist';
 import AdminUpload from './pages/AdminUpload';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Analytics from './pages/Analytics';
 import ProfileSetupModal from './components/ProfileSetupModal';
 
 const rootRoute = createRootRoute({
@@ -80,12 +79,6 @@ const adminUploadRoute = createRoute({
   component: AdminUpload,
 });
 
-const analyticsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/analytics',
-  component: Analytics,
-});
-
 const routeTree = rootRoute.addChildren([
   browseRoute,
   watchRoute,
@@ -96,7 +89,6 @@ const routeTree = rootRoute.addChildren([
   profileRoute,
   settingsRoute,
   adminUploadRoute,
-  analyticsRoute,
 ]);
 
 const router = createRouter({ routeTree });

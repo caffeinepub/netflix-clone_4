@@ -6,11 +6,13 @@ import Iter "mo:core/Iter";
 import Array "mo:core/Array";
 import Order "mo:core/Order";
 import Storage "blob-storage/Storage";
-import MixinStorage "blob-storage/Mixin";
 import Principal "mo:core/Principal";
 import Runtime "mo:core/Runtime";
 import AccessControl "authorization/access-control";
+import MixinStorage "blob-storage/Mixin";
 import MixinAuthorization "authorization/MixinAuthorization";
+
+
 
 actor {
   include MixinStorage();
@@ -82,10 +84,10 @@ actor {
     userProfiles.size();
   };
 
-  // VIDEO CREATION - Allows any authenticated user to create videos
+  // VIDEO CREATION - Admin only for production content control
   public shared ({ caller }) func createVideo(metaData : Video) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only authenticated users can create videos");
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can create videos");
     };
     switch (videos.get(metaData.id)) {
       case (?_) {
@@ -100,10 +102,9 @@ actor {
     };
   };
 
+  // VIDEO BROWSING - Open to all users including guests
   public query ({ caller }) func getVideoMeta(id : Text) : async Video {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access video metadata");
-    };
+    // No authorization check - allow guests to view video metadata
     switch (videos.get(id)) {
       case (?videoStore) { videoStore.metaData };
       case (null) { Runtime.trap("Video not found") };
@@ -111,16 +112,12 @@ actor {
   };
 
   public query ({ caller }) func getAllVideos() : async [Video] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can browse videos");
-    };
+    // No authorization check - allow guests to browse all videos
     videos.values().map(func(vStore) { vStore.metaData }).toArray();
   };
 
   public query ({ caller }) func searchVideos(searchText : Text) : async [Video] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can search videos");
-    };
+    // No authorization check - allow guests to search videos
     let results = List.empty<Video>();
     for ((id, videoStore) in videos.entries()) {
       if (videoStore.metaData.title.contains(#text searchText)) {
@@ -131,9 +128,7 @@ actor {
   };
 
   public query ({ caller }) func getVideosByCategory(category : Text) : async [Video] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can browse videos by category");
-    };
+    // No authorization check - allow guests to filter by category
     let results = List.empty<Video>();
     for ((id, videoStore) in videos.entries()) {
       if (Text.equal(videoStore.metaData.category, category)) {
@@ -144,8 +139,9 @@ actor {
   };
 
   public query ({ caller }) func getVideoDownloadLink(videoId : Text) : async Text {
+    // Require authenticated user to access video content
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access download links");
+      Runtime.trap("Unauthorized: Only authenticated users can access video content");
     };
     switch (videos.get(videoId)) {
       case (?videoStore) {

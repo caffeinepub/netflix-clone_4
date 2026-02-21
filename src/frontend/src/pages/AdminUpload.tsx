@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate, Link } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import { useAddVideo } from '../hooks/useQueries';
+import { useAddVideo, useIsCallerAdmin } from '../hooks/useQueries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ArrowLeft, Upload as UploadIcon, Youtube } from 'lucide-react';
+import { Loader2, ArrowLeft, Upload as UploadIcon, Youtube, ShieldAlert } from 'lucide-react';
 import { isValidYouTubeUrl, extractYouTubeVideoId, getYouTubeThumbnailUrl } from '../utils/youtubeHelpers';
 import { VideoSource, ExternalBlob } from '../backend';
 import { toast } from 'sonner';
@@ -18,6 +18,7 @@ type UploadMode = 'youtube' | 'file';
 export default function AdminUpload() {
   const navigate = useNavigate();
   const { identity } = useInternetIdentity();
+  const { data: isAdmin, isLoading: isAdminLoading } = useIsCallerAdmin();
   const addVideoMutation = useAddVideo();
 
   const [mode, setMode] = useState<UploadMode>('youtube');
@@ -170,6 +171,33 @@ export default function AdminUpload() {
           <p className="text-white/60 mb-6">
             Please log in to upload videos.
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAdminLoading) {
+    return (
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-netflix-red" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="container mx-auto px-4 py-16 bg-black min-h-screen">
+        <div className="max-w-md mx-auto text-center">
+          <ShieldAlert className="w-16 h-16 mx-auto mb-4 text-netflix-red" />
+          <h2 className="text-2xl font-bold mb-2 text-white">Access Denied</h2>
+          <p className="text-white/60 mb-6">
+            You do not have permission to access this page. Only administrators can upload videos.
+          </p>
+          <Link to="/">
+            <Button className="bg-netflix-red hover:bg-netflix-red/90">
+              Return to Home
+            </Button>
+          </Link>
         </div>
       </div>
     );

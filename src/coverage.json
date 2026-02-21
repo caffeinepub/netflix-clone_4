@@ -1,86 +1,32 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-21T16:29:31.860Z",
+  "generatedAt": "2026-02-21T17:23:25.767Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 1,
+    "total": 1,
+    "implemented": 0,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/index.html",
-          "frontend/src/main.tsx",
-          "frontend/src/App.tsx",
-          "frontend/public/manifest.json",
-          "frontend/public/sw.js",
-          "frontend/public/offline.html"
-        ],
-        "matchedFiles": [
-          "frontend/public/sw.js"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
+        "summary": "Deploy the current application build (Version 17) to production on Internet Computer mainnet",
         "status": "missing",
         "plannedFiles": [
-          "frontend/src/hooks/useActor.ts",
+          "frontend/public/sw.js",
           "frontend/src/hooks/useInternetIdentity.ts",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/components/LoginButton.tsx",
-          "frontend/src/components/ProfileSetupModal.tsx",
-          "frontend/src/pages/AdminUpload.tsx",
-          "frontend/src/pages/Analytics.tsx",
-          "frontend/src/pages/Browse.tsx",
-          "frontend/src/pages/Watch.tsx",
-          "frontend/src/pages/Favorites.tsx",
-          "frontend/src/pages/Watchlist.tsx",
-          "frontend/src/pages/Profile.tsx",
-          "frontend/src/pages/Settings.tsx",
-          "frontend/src/pages/Search.tsx",
-          "frontend/src/pages/Category.tsx",
-          "frontend/src/components/VideoPlayer.tsx",
-          "frontend/src/components/VideoCard.tsx",
-          "frontend/src/components/VideoGrid.tsx",
-          "frontend/src/components/VideoRow.tsx",
-          "frontend/src/components/HeroBanner.tsx",
-          "frontend/src/components/CategoryFilter.tsx",
-          "frontend/src/components/FavoriteButton.tsx",
-          "frontend/src/components/WatchlistButton.tsx",
-          "frontend/src/components/DownloadButton.tsx",
-          "frontend/src/components/SearchBar.tsx",
-          "frontend/src/components/Layout.tsx",
-          "frontend/src/utils/youtubeHelpers.ts",
-          "frontend/src/utils/fileHelpers.ts",
-          "frontend/src/utils/urlParams.ts",
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
+          "frontend/public/manifest.json"
         ],
         "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/sw.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

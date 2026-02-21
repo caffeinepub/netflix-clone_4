@@ -1,12 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Perform a complete fresh rebuild of the Saanufox video streaming platform with new canister IDs to permanently resolve the "Canister ID Not Resolved" error.
+**Goal:** Deploy the Saanufox application (Version 17) to Internet Computer mainnet production environment.
 
 **Planned changes:**
-- Generate completely new backend and frontend canister IDs
-- Rebuild entire application from scratch with proper backend canister initialization
-- Configure correct actor routing and gateway resolution settings
-- Verify all existing features remain functional (video upload/playback, authentication, favorites, watchlist, profiles, admin analytics)
+- Deploy all backend canisters to Internet Computer mainnet
+- Deploy frontend canister to mainnet with production configuration
+- Configure Internet Identity authentication for mainnet
+- Verify service worker and PWA functionality in production
+- Ensure all features (video streaming, authentication, favorites, watchlist) work correctly
 
-**User-visible outcome:** Users can access the Saanufox streaming platform without encountering the "Canister ID Not Resolved" error, with all video streaming, authentication, and profile features working correctly.
+**User-visible outcome:** The Saanufox application will be accessible to users on the Internet Computer mainnet with full functionality including video streaming, user authentication, favorites management, and offline PWA support.

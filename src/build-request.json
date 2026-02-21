@@ -1,81 +1,39 @@
 {
   "kind": "build_request",
-  "title": "Complete fresh rebuild of Saanufox streaming platform",
+  "title": "Deploy to production",
   "projectName": "Saanufox",
-  "priority": "high",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
+      "text": "Deploy the current application build (Version 17) to production on Internet Computer mainnet",
       "target": "both",
       "source": {
         "messageIds": [
-          "msg-20"
+          "msg-4"
         ],
         "quotes": [
-          "Fresh Rebuild hard"
+          "Ha isko kar do"
         ]
       },
       "acceptanceCriteria": [
-        "Application deploys successfully with new backend and frontend canister IDs",
-        "Backend canister initializes properly and is accessible via Internet Computer gateway",
-        "Frontend loads without 'Canister ID Not Resolved' error",
-        "All existing features remain functional after rebuild (video upload, playback, authentication, favorites, watchlist, profile, admin analytics)"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-19"
-        ],
-        "quotes": [
-          "Yeh issue permanently solve ho jayega. Previous deployment mein kuch configuration miss ho gayi thi."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend actor initializes all data structures (Map/Set for videos, users, profiles) correctly on first deployment",
-        "Canister responds to health check queries immediately after deployment",
-        "Internet Computer gateway can resolve canister ID within 2 minutes of deployment"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-20"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Video upload works for both YouTube URLs and file uploads",
-        "Video playback functions correctly for both YouTube embeds and blob videos",
-        "User authentication via Internet Identity works",
-        "Favorites and watchlist add/remove operations function correctly",
-        "User profile setup and settings update work",
-        "Admin analytics display registered user count",
-        "PWA features (manifest, service worker, offline page) remain functional"
+        "Application is successfully deployed to Internet Computer mainnet",
+        "All backend canisters are running on mainnet",
+        "Frontend is accessible via mainnet canister URL",
+        "Service worker and PWA features are functional in production",
+        "All existing features (video streaming, authentication, favorites, watchlist) work correctly in production environment"
       ]
     }
   ],
   "constraints": [
-    "Must generate completely new canister IDs for both backend and frontend",
-    "Must preserve all existing functionality from the current Saanufox application",
-    "Must use existing Motoko backend architecture with single-actor pattern",
-    "Must maintain React + TypeScript + Tailwind + Shadcn frontend stack",
-    "Must keep Internet Identity authentication integration unchanged",
-    "Must not modify immutable frontend paths (hooks/useInternetIdentity, hooks/useActor, main.tsx, components/ui)"
+    "Maintain all existing functionality during deployment",
+    "Preserve service worker cache strategy for offline support",
+    "Keep Internet Identity authentication configuration for mainnet"
   ],
   "nonGoals": [
-    "Adding new features beyond what currently exists",
-    "Changing the visual design or UI styling",
-    "Modifying the Netflix-style theme or branding",
-    "Adding new video formats or processing capabilities",
-    "Implementing real-time features or WebSocket connections",
-    "Integrating third-party video services beyond YouTube URL support"
+    "Making code changes or adding new features",
+    "Modifying the backend schema or data structures",
+    "Changing the UI design or user experience"
   ],
   "imageRequirements": {
     "required": [],
