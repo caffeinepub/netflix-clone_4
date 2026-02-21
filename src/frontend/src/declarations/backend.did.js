@@ -77,6 +77,7 @@ export const idlService = IDL.Service({
   'getAllVideos' : IDL.Func([], [IDL.Vec(Video)], ['query']),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getUserCount' : IDL.Func([], [IDL.Nat], ['query']),
   'getUserFavorites' : IDL.Func([], [IDL.Vec(Video)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
@@ -84,6 +85,7 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'getUserWatchlist' : IDL.Func([], [IDL.Vec(Video)], ['query']),
+  'getVideoDownloadLink' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
   'getVideoMeta' : IDL.Func([IDL.Text], [Video], ['query']),
   'getVideosByCategory' : IDL.Func([IDL.Text], [IDL.Vec(Video)], ['query']),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
@@ -92,7 +94,6 @@ export const idlService = IDL.Service({
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'searchVideos' : IDL.Func([IDL.Text], [IDL.Vec(Video)], ['query']),
   'unmarkFavorite' : IDL.Func([IDL.Text], [], []),
-  'uploadVideo' : IDL.Func([IDL.Text, Video], [], []),
 });
 
 export const idlInitArgs = [];
@@ -164,6 +165,7 @@ export const idlFactory = ({ IDL }) => {
     'getAllVideos' : IDL.Func([], [IDL.Vec(Video)], ['query']),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getUserCount' : IDL.Func([], [IDL.Nat], ['query']),
     'getUserFavorites' : IDL.Func([], [IDL.Vec(Video)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
@@ -171,6 +173,7 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getUserWatchlist' : IDL.Func([], [IDL.Vec(Video)], ['query']),
+    'getVideoDownloadLink' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
     'getVideoMeta' : IDL.Func([IDL.Text], [Video], ['query']),
     'getVideosByCategory' : IDL.Func([IDL.Text], [IDL.Vec(Video)], ['query']),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
@@ -179,7 +182,6 @@ export const idlFactory = ({ IDL }) => {
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'searchVideos' : IDL.Func([IDL.Text], [IDL.Vec(Video)], ['query']),
     'unmarkFavorite' : IDL.Func([IDL.Text], [], []),
-    'uploadVideo' : IDL.Func([IDL.Text, Video], [], []),
   });
 };
 

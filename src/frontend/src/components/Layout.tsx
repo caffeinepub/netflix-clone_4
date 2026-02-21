@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Search, Home, Heart, Bookmark, Upload } from 'lucide-react';
+import { Search, Home, Heart, Bookmark, Upload, User, Settings, BarChart3 } from 'lucide-react';
 import LoginButton from './LoginButton';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 
@@ -8,78 +8,99 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const isAuthenticated = !!identity;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black via-black/95 to-transparent backdrop-blur-sm transition-all">
+        <div className="container mx-auto px-4 md:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
-                <div className="text-2xl font-bold bg-gradient-to-r from-[oklch(0.65_0.25_25)] to-[oklch(0.75_0.20_50)] bg-clip-text text-transparent">
-                  Saanufox
+                <div className="text-2xl md:text-3xl font-bold text-netflix-red tracking-tight">
+                  SAANUFOX
                 </div>
               </Link>
               <nav className="hidden md:flex items-center gap-6">
                 <Link
                   to="/"
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                  className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
                 >
-                  <Home className="w-4 h-4" />
-                  Browse
+                  Home
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                 </Link>
                 <Link
                   to="/search"
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                  className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
                 >
-                  <Search className="w-4 h-4" />
                   Search
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                 </Link>
                 {isAuthenticated && (
                   <>
                     <Link
                       to="/favorites"
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                      className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
                     >
-                      <Heart className="w-4 h-4" />
-                      Favorites
+                      My List
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                     </Link>
                     <Link
                       to="/watchlist"
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                      className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
                     >
-                      <Bookmark className="w-4 h-4" />
                       Watchlist
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                     </Link>
                     <Link
-                      to="/admin/upload"
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                      to="/analytics"
+                      className="text-sm font-medium text-white/90 hover:text-white transition-colors relative group"
                     >
-                      <Upload className="w-4 h-4" />
-                      Upload
+                      Analytics
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-netflix-red transition-all group-hover:w-full" />
                     </Link>
                   </>
                 )}
               </nav>
             </div>
-            <LoginButton />
+            <div className="flex items-center gap-4">
+              <Link to="/search" className="md:hidden">
+                <Search className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+              </Link>
+              {isAuthenticated && (
+                <div className="flex items-center gap-3">
+                  <Link to="/analytics" className="md:hidden">
+                    <BarChart3 className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+                  </Link>
+                  <Link to="/admin/upload">
+                    <Upload className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+                  </Link>
+                  <Link to="/profile">
+                    <User className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+                  </Link>
+                  <Link to="/settings">
+                    <Settings className="w-5 h-5 text-white/90 hover:text-white transition-colors" />
+                  </Link>
+                </div>
+              )}
+              <LoginButton />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="min-h-[calc(100vh-140px)]">{children}</main>
+      <main className="min-h-screen pt-16">{children}</main>
 
-      <footer className="border-t border-border/40 bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-6">
+      <footer className="border-t border-white/10 bg-black">
+        <div className="container mx-auto px-4 md:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-white/60">
               © {new Date().getFullYear()} Saanufox. All rights reserved.
             </p>
-            <p className="text-sm text-muted-foreground flex items-center gap-1">
-              Built with <Heart className="w-3 h-3 text-[oklch(0.65_0.25_25)] fill-current" /> using{' '}
+            <p className="text-sm text-white/60 flex items-center gap-1">
+              Built with <Heart className="w-3 h-3 text-netflix-red fill-current" /> using{' '}
               <a
                 href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-[oklch(0.65_0.25_25)] transition-colors font-medium"
+                className="text-white hover:text-netflix-red transition-colors font-medium"
               >
                 caffeine.ai
               </a>

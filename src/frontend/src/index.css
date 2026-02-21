@@ -4,15 +4,15 @@
 
 @layer base {
     :root {
-        --radius: 0.75rem;
+        --radius: 0.25rem;
         --background: 0.98 0 0;
         --foreground: 0.15 0 0;
         --card: 1 0 0;
         --card-foreground: 0.15 0 0;
         --popover: 1 0 0;
         --popover-foreground: 0.15 0 0;
-        --primary: 0.25 0 0;
-        --primary-foreground: 0.98 0 0;
+        --primary: 0.50 0.24 29;
+        --primary-foreground: 1 0 0;
         --secondary: 0.96 0 0;
         --secondary-foreground: 0.25 0 0;
         --muted: 0.96 0 0;
@@ -24,28 +24,31 @@
         --border: 0.90 0 0;
         --input: 0.90 0 0;
         --ring: 0.65 0 0;
+        --netflix-red: 0.50 0.24 29;
+        --hero-bg: url('/assets/generated/netflix-hero-bg.dim_1920x1080.png');
     }
 
     .dark {
-        --background: 0.10 0 0;
+        --background: 0 0 0;
         --foreground: 0.98 0 0;
-        --card: 0.14 0 0;
+        --card: 0.08 0 0;
         --card-foreground: 0.98 0 0;
-        --popover: 0.12 0 0;
+        --popover: 0.08 0 0;
         --popover-foreground: 0.98 0 0;
-        --primary: 0.65 0.25 25;
-        --primary-foreground: 0.10 0 0;
-        --secondary: 0.18 0 0;
+        --primary: 0.50 0.24 29;
+        --primary-foreground: 1 0 0;
+        --secondary: 0.12 0 0;
         --secondary-foreground: 0.98 0 0;
-        --muted: 0.18 0 0;
-        --muted-foreground: 0.65 0 0;
-        --accent: 0.22 0 0;
+        --muted: 0.15 0 0;
+        --muted-foreground: 0.60 0 0;
+        --accent: 0.15 0 0;
         --accent-foreground: 0.98 0 0;
-        --destructive: 0.60 0.25 27;
-        --destructive-foreground: 0.98 0 0;
-        --border: 0.25 0 0;
-        --input: 0.22 0 0;
-        --ring: 0.65 0.25 25;
+        --destructive: 0.50 0.24 29;
+        --destructive-foreground: 1 0 0;
+        --border: 0.20 0 0;
+        --input: 0.15 0 0;
+        --ring: 0.50 0.24 29;
+        --netflix-red: 0.50 0.24 29;
     }
 
     * {
@@ -54,8 +57,38 @@
     
     body {
         @apply bg-background text-foreground;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+    }
+}
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .netflix-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .netflix-hover-scale {
+        transition: transform 0.3s ease, z-index 0s 0.3s;
+    }
+
+    .netflix-hover-scale:hover {
+        transform: scale(1.5);
+        z-index: 50;
+        transition: transform 0.3s ease, z-index 0s 0s;
     }
 }

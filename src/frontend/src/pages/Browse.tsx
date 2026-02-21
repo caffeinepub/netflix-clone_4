@@ -1,9 +1,9 @@
 import { useGetAllVideos } from '../hooks/useQueries';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
-import VideoGrid from '../components/VideoGrid';
+import HeroBanner from '../components/HeroBanner';
+import VideoRow from '../components/VideoRow';
 import CategoryFilter from '../components/CategoryFilter';
-import { Loader2, Upload, Plus } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
+import { Loader2 } from 'lucide-react';
 
 export default function Browse() {
   const { data: videos = [], isLoading } = useGetAllVideos();
@@ -11,72 +11,62 @@ export default function Browse() {
 
   const isAuthenticated = !!identity;
 
+  // Group videos by category
+  const videosByCategory = videos.reduce((acc, video) => {
+    if (!acc[video.category]) {
+      acc[video.category] = [];
+    }
+    acc[video.category].push(video);
+    return acc;
+  }, {} as Record<string, typeof videos>);
+
+  // Group videos by genre
+  const videosByGenre = videos.reduce((acc, video) => {
+    if (!acc[video.genre]) {
+      acc[video.genre] = [];
+    }
+    acc[video.genre].push(video);
+    return acc;
+  }, {} as Record<string, typeof videos>);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-netflix-red" />
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="relative mb-12 rounded-2xl overflow-hidden">
-        <img
-          src="/assets/generated/hero-banner.dim_1920x400.png"
-          alt="Saanufox Banner"
-          className="w-full h-[300px] md:h-[400px] object-cover"
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[oklch(0.65_0.25_25)] to-[oklch(0.75_0.20_50)] bg-clip-text text-transparent">
-            Discover Amazing Content
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Stream thousands of movies, series, and documentaries in stunning quality
-          </p>
-        </div>
-      </div>
+    <div className="bg-black min-h-screen">
+      <HeroBanner />
 
-      {isAuthenticated && (
-        <Link to="/admin/upload">
-          <div className="mb-12 group cursor-pointer">
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.65_0.25_25)] to-[oklch(0.55_0.20_35)] p-8 transition-all duration-300 hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] hover:scale-[1.02]">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative flex items-center justify-between">
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-colors duration-300">
-                    <Upload className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                      Upload New Video
-                    </h2>
-                    <p className="text-white/80 text-sm md:text-base">
-                      Add YouTube videos or upload your own content to the platform
-                    </p>
-                  </div>
-                </div>
-                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm group-hover:bg-white/20 group-hover:translate-x-1 transition-all duration-300">
-                  <Plus className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </div>
+      <div className="relative -mt-32 z-10">
+        <div className="mb-8 px-4 md:px-8">
+          <CategoryFilter />
+        </div>
+
+        {Object.entries(videosByCategory).map(([category, categoryVideos]) => (
+          <VideoRow key={category} title={category} videos={categoryVideos} />
+        ))}
+
+        {Object.entries(videosByGenre).map(([genre, genreVideos]) => (
+          <VideoRow key={`genre-${genre}`} title={`${genre} Collection`} videos={genreVideos} />
+        ))}
+
+        {videos.length > 0 && (
+          <VideoRow title="All Videos" videos={videos} />
+        )}
+
+        {videos.length === 0 && (
+          <div className="text-center py-16 px-4">
+            <p className="text-white/60 text-lg">No videos available yet.</p>
+            {isAuthenticated && (
+              <p className="text-white/40 text-sm mt-2">Be the first to upload content!</p>
+            )}
           </div>
-        </Link>
-      )}
-
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Browse by Category</h2>
-        <CategoryFilter />
+        )}
       </div>
-
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">All Videos</h2>
-      </div>
-
-      {isLoading ? (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      ) : (
-        <VideoGrid videos={videos} />
-      )}
     </div>
   );
 }

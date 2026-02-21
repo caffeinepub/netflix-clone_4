@@ -1,153 +1,84 @@
 {
   "kind": "build_request",
-  "title": "Convert Saanufox to Progressive Web App with offline support and home screen installation",
+  "title": "Complete fresh rebuild of Saanufox streaming platform",
   "projectName": "Saanufox",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-24",
-      "text": "Create a manifest.json file in the frontend/public directory with app metadata including name 'Saanufox', short_name, description 'Modern video streaming platform', theme_color matching the dark cinematic theme, background_color, display mode 'standalone', start_url, and icons array with multiple sizes (192x192, 512x512) for home screen installation",
-      "target": "frontend",
+      "id": "REQ-1",
+      "text": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-user-final"
+          "msg-20"
         ],
         "quotes": [
-          "Web App बनाएं",
-          "Home screen पर install हो सके",
-          "app जैसा अनुभव"
+          "Fresh Rebuild hard"
         ]
       },
       "acceptanceCriteria": [
-        "manifest.json exists in frontend/public directory",
-        "Manifest includes all required PWA fields (name, short_name, description, icons, theme_color, display)",
-        "Theme colors match the existing dark cinematic design",
-        "Icons array includes at least 192x192 and 512x512 sizes"
+        "Application deploys successfully with new backend and frontend canister IDs",
+        "Backend canister initializes properly and is accessible via Internet Computer gateway",
+        "Frontend loads without 'Canister ID Not Resolved' error",
+        "All existing features remain functional after rebuild (video upload, playback, authentication, favorites, watchlist, profile, admin analytics)"
       ]
     },
     {
-      "id": "REQ-25",
-      "text": "Link the manifest.json file in frontend/index.html by adding a <link rel='manifest' href='/manifest.json'> tag in the <head> section",
-      "target": "frontend",
+      "id": "REQ-2",
+      "text": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-final"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Manifest link tag is present in index.html head section",
-        "Browser recognizes the app as installable"
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "text": "Add theme-color meta tag to frontend/index.html matching the manifest theme_color for consistent browser UI theming",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-final"
-        ]
-      },
-      "acceptanceCriteria": [
-        "theme-color meta tag is present in index.html",
-        "Color value matches manifest.json theme_color"
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Create a service worker file (sw.js) in frontend/public that implements caching strategies for offline support, including cache-first strategy for static assets (JS, CSS, images) and network-first strategy for API calls, with proper cache versioning and cleanup",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-final"
+          "msg-19"
         ],
         "quotes": [
-          "Offline काम करे",
-          "Offline support"
+          "Yeh issue permanently solve ho jayega. Previous deployment mein kuch configuration miss ho gayi thi."
         ]
       },
       "acceptanceCriteria": [
-        "Service worker file exists in frontend/public",
-        "Implements install, activate, and fetch event handlers",
-        "Caches static assets during install",
-        "Provides fallback responses when offline",
-        "Implements cache versioning and old cache cleanup"
+        "Backend actor initializes all data structures (Map/Set for videos, users, profiles) correctly on first deployment",
+        "Canister responds to health check queries immediately after deployment",
+        "Internet Computer gateway can resolve canister ID within 2 minutes of deployment"
       ]
     },
     {
-      "id": "REQ-28",
-      "text": "Register the service worker in frontend/src/main.tsx after the React app mounts, with proper error handling and console logging for registration success/failure",
-      "target": "frontend",
+      "id": "REQ-3",
+      "text": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-user-final"
+          "msg-20"
         ]
       },
       "acceptanceCriteria": [
-        "Service worker registration code is added to main.tsx",
-        "Registration only occurs in production builds",
-        "Handles registration errors gracefully",
-        "Logs registration status to console"
-      ]
-    },
-    {
-      "id": "REQ-29",
-      "text": "Create an offline fallback page (offline.html) in frontend/public that displays when the user is offline and requests uncached content, with basic styling matching the app theme and a message indicating no internet connection",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-final"
-        ],
-        "quotes": [
-          "Offline काम करे"
-        ]
-      },
-      "acceptanceCriteria": [
-        "offline.html exists in frontend/public",
-        "Page displays clear offline message",
-        "Styling matches app theme",
-        "Service worker serves this page for failed network requests when offline"
-      ]
-    },
-    {
-      "id": "REQ-30",
-      "text": "Add apple-touch-icon meta tags to frontend/index.html for iOS home screen installation support with appropriate icon sizes",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-final"
-        ],
-        "quotes": [
-          "Home screen पर install हो सके",
-          "mobile browsers"
-        ]
-      },
-      "acceptanceCriteria": [
-        "apple-touch-icon link tags are present in index.html",
-        "Icons support common iOS sizes (180x180)",
-        "iOS devices can add app to home screen"
+        "Video upload works for both YouTube URLs and file uploads",
+        "Video playback functions correctly for both YouTube embeds and blob videos",
+        "User authentication via Internet Identity works",
+        "Favorites and watchlist add/remove operations function correctly",
+        "User profile setup and settings update work",
+        "Admin analytics display registered user count",
+        "PWA features (manifest, service worker, offline page) remain functional"
       ]
     }
   ],
   "constraints": [
-    "Do not modify backend/main.mo or backend/migration.mo",
-    "Do not edit immutable frontend paths: hooks/useInternetIdentity.ts, hooks/useActor.ts, main.tsx (except for service worker registration), components/ui/*",
-    "Service worker must not interfere with Internet Identity authentication flows",
-    "Maintain existing React Query caching behavior alongside service worker caching"
+    "Must generate completely new canister IDs for both backend and frontend",
+    "Must preserve all existing functionality from the current Saanufox application",
+    "Must use existing Motoko backend architecture with single-actor pattern",
+    "Must maintain React + TypeScript + Tailwind + Shadcn frontend stack",
+    "Must keep Internet Identity authentication integration unchanged",
+    "Must not modify immutable frontend paths (hooks/useInternetIdentity, hooks/useActor, main.tsx, components/ui)"
   ],
   "nonGoals": [
-    "Native mobile app development (Flutter, React Native)",
-    "Firebase integration",
-    "Google Play Store packaging",
-    "Push notifications",
-    "Background sync"
+    "Adding new features beyond what currently exists",
+    "Changing the visual design or UI styling",
+    "Modifying the Netflix-style theme or branding",
+    "Adding new video formats or processing capabilities",
+    "Implementing real-time features or WebSocket connections",
+    "Integrating third-party video services beyond YouTube URL support"
   ],
   "imageRequirements": {
-    "required": [
-      "Saanufox app icon with modern streaming theme in red and black colors suitable for PWA (pwa-icon-192.dim_192x192.png)",
-      "Saanufox app icon with modern streaming theme in red and black colors suitable for PWA high resolution (pwa-icon-512.dim_512x512.png)",
-      "Apple touch icon for iOS home screen with Saanufox branding (apple-touch-icon.dim_180x180.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

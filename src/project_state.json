@@ -1,336 +1,49 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
-  "summary": "Progressive Web App (PWA) video streaming platform named Saanufox with YouTube integration, supporting mobile and desktop browsers, home screen installation, and offline functionality",
+  "projectStateVersion": 3,
+  "summary": "Saanufox Netflix-style video streaming platform with video upload, playback, user authentication, and PWA support",
   "architectural_notes": [
-    "Video streaming application similar to Netflix",
-    "Requires video player component",
-    "User authentication system needed for accounts",
-    "Video metadata storage (titles, thumbnails, categories)",
-    "YouTube integration required (embed or API-based)",
-    "Public video upload access - all users can upload content",
-    "Progressive Web App (PWA) architecture with service workers",
-    "Offline-first design with content caching strategy",
-    "Home screen installable on mobile and desktop browsers",
-    "Responsive design optimized for mobile and desktop viewports"
+    "Internet Computer (ICP) deployment with frontend and backend canisters",
+    "Internet Identity authentication for user login",
+    "PWA (Progressive Web App) support for mobile installation",
+    "Netflix-style dark theme UI with horizontal scrolling rows",
+    "Video upload supports both YouTube links and file uploads",
+    "All authenticated users have upload permissions (admin-only restriction removed)",
+    "Video playback with streaming and download capabilities",
+    "Categories, search, and browse functionality for video discovery"
   ],
   "known_issues": [
-    "YouTube videos are not displaying correctly",
-    "Video uploading system is not functioning properly"
+    "Canister ID Not Resolved error occurring after deployment - requires fresh rebuild with proper backend initialization"
   ],
   "isFixRequest": true,
-  "imageRequirements": "## Required Images\n- Saanufox app icon with modern streaming theme in red and black colors suitable for PWA (pwa-icon-192.dim_192x192.png)\n- Saanufox app icon with modern streaming theme in red and black colors suitable for PWA high resolution (pwa-icon-512.dim_512x512.png)\n- Apple touch icon for iOS home screen with Saanufox branding (apple-touch-icon.dim_180x180.png)",
   "existing_features": [
     {
-      "id": "feature-create-a-video-library-browsing-interface-displaying-video-thumbnails-in-a-grid-layout-with-title-and-metadata",
-      "title": "Create a video library browsing interface displaying video thumbnails in a grid layout with title and metadata",
+      "id": "feature-perform-a-complete-fresh-rebuild-of-the-entire-saanufox-video-streaming-platform-with-new-canister-ids-to-resolve-the-persistent-canister-id-not-resolved-error-that-occurs-after-deployment",
+      "title": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-video-playback-functionality-allowing-users-to-play-selected-videos",
-      "title": "Implement video playback functionality allowing users to play selected videos",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-search-functionality-enabling-users-to-find-videos-by-title-or-keywords",
-      "title": "Add search functionality enabling users to find videos by title or keywords",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-organize-videos-into-categories-and-genres-with-navigation-between-them",
-      "title": "Organize videos into categories and genres with navigation between them",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-user-authentication-system-using-internet-identity-for-account-management",
-      "title": "Implement user authentication system using Internet Identity for account management",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-favorites-and-watchlist-functionality-allowing-users-to-save-and-manage-their-preferred-videos",
-      "title": "Create favorites and watchlist functionality allowing users to save and manage their preferred videos",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-design-a-cohesive-streaming-platform-visual-theme-with-cinematic-dark-colors-elegant-typography-and-modern-layout-patterns-that-emphasize-video-content",
-      "title": "Design a cohesive streaming platform visual theme with cinematic dark colors, elegant typography, and modern layout patterns that emphasize video content",
-      "reqIds": [
-        "REQ-7"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-generated-thumbnail-images-for-video-library-as-static-assets-in-frontend-public-assets-generated",
-      "title": "Display generated thumbnail images for video library as static assets in frontend/public/assets/generated",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-videoplayer-component-to-detect-and-render-youtube-videos-using-an-iframe-embed-when-the-video-source-is-a-youtube-url-while-maintaining-existing-html5-video-player-for-blob-based-videos",
-      "title": "Update VideoPlayer component to detect and render YouTube videos using an iframe embed when the video source is a YouTube URL, while maintaining existing HTML5 video player for blob-based videos",
-      "reqIds": [
-        "REQ-10"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-admin-video-upload-form-that-allows-adding-videos-either-by-uploading-a-file-blob-or-by-providing-a-youtube-video-url-with-fields-for-title-description-category-genre-and-keywords",
-      "title": "Create an admin video upload form that allows adding videos either by uploading a file blob or by providing a YouTube video URL, with fields for title, description, category, genre, and keywords",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-prominent-upload-video-button-or-card-in-the-browse-page-hero-section-that-navigates-to-the-admin-upload-page-when-clicked",
-      "title": "Add a prominent 'Upload Video' button or card in the Browse page hero section that navigates to the admin upload page when clicked",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-upload-section-prominently-in-the-main-navigation-or-as-a-featured-action-on-the-browse-page-so-users-can-easily-find-where-to-add-videos",
-      "title": "Display the upload section prominently in the main navigation or as a featured action on the Browse page so users can easily find where to add videos",
-      "reqIds": [
-        "REQ-15"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-remove-admin-only-authorization-check-from-the-video-upload-page-so-any-authenticated-user-can-access-the-upload-form-and-submit-videos",
-      "title": "Remove admin-only authorization check from the video upload page so any authenticated user can access the upload form and submit videos",
-      "reqIds": [
-        "REQ-16"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-layout-navigation-to-show-the-upload-link-to-all-authenticated-users-not-just-admins",
-      "title": "Update the Layout navigation to show the Upload link to all authenticated users, not just admins",
-      "reqIds": [
-        "REQ-18"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-display-the-upload-video-card-on-the-browse-page-hero-section-for-all-authenticated-users-not-just-admins",
-      "title": "Display the Upload Video card on the Browse page hero section for all authenticated users, not just admins",
-      "reqIds": [
-        "REQ-19"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-debug-and-fix-the-video-upload-system-in-the-adminupload-page-to-ensure-videos-can-be-successfully-created-with-either-youtube-urls-or-file-uploads",
-      "title": "Debug and fix the video upload system in the AdminUpload page to ensure videos can be successfully created with either YouTube URLs or file uploads",
-      "reqIds": [
-        "REQ-21"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-check-and-fix-the-youtube-url-extraction-and-validation-logic-in-youtubehelpers-ts-to-ensure-youtube-video-ids-are-correctly-parsed-from-various-url-formats",
-      "title": "Check and fix the YouTube URL extraction and validation logic in youtubeHelpers.ts to ensure YouTube video IDs are correctly parsed from various URL formats",
-      "reqIds": [
-        "REQ-23"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-manifest-json-file-in-the-frontend-public-directory-with-app-metadata-including-name-saanufox-short-name-description-modern-video-streaming-platform-theme-color-matching-the-dark-cinematic-theme-background-color-display-mode-standalone-start-url-and-icons-array-with-multiple-sizes-192x192-512x512-for-home-screen-installation",
-      "title": "Create a manifest.json file in the frontend/public directory with app metadata including name 'Saanufox', short_name, description 'Modern video streaming platform', theme_color matching the dark cinematic theme, background_color, display mode 'standalone', start_url, and icons array with multiple sizes (192x192, 512x512) for home screen installation",
-      "reqIds": [
-        "REQ-24"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-link-the-manifest-json-file-in-frontend-index-html-by-adding-a-link-rel-manifest-href-manifest-json-tag-in-the-head-section",
-      "title": "Link the manifest.json file in frontend/index.html by adding a <link rel='manifest' href='/manifest.json'> tag in the <head> section",
-      "reqIds": [
-        "REQ-25"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-theme-color-meta-tag-to-frontend-index-html-matching-the-manifest-theme-color-for-consistent-browser-ui-theming",
-      "title": "Add theme-color meta tag to frontend/index.html matching the manifest theme_color for consistent browser UI theming",
-      "reqIds": [
-        "REQ-26"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-service-worker-file-sw-js-in-frontend-public-that-implements-caching-strategies-for-offline-support-including-cache-first-strategy-for-static-assets-js-css-images-and-network-first-strategy-for-api-calls-with-proper-cache-versioning-and-cleanup",
-      "title": "Create a service worker file (sw.js) in frontend/public that implements caching strategies for offline support, including cache-first strategy for static assets (JS, CSS, images) and network-first strategy for API calls, with proper cache versioning and cleanup",
-      "reqIds": [
-        "REQ-27"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-an-offline-fallback-page-offline-html-in-frontend-public-that-displays-when-the-user-is-offline-and-requests-uncached-content-with-basic-styling-matching-the-app-theme-and-a-message-indicating-no-internet-connection",
-      "title": "Create an offline fallback page (offline.html) in frontend/public that displays when the user is offline and requests uncached content, with basic styling matching the app theme and a message indicating no internet connection",
-      "reqIds": [
-        "REQ-29"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-apple-touch-icon-meta-tags-to-frontend-index-html-for-ios-home-screen-installation-support-with-appropriate-icon-sizes",
-      "title": "Add apple-touch-icon meta tags to frontend/index.html for iOS home screen installation support with appropriate icon sizes",
-      "reqIds": [
-        "REQ-30"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
-      "id": "AR-1",
-      "summary": "Browse video library with thumbnails",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-2",
-      "summary": "Video playback functionality",
-      "reqIds": [],
+      "summary": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
+      "reqIds": [
+        "REQ-2"
+      ],
       "status": "pending"
     },
     {
       "id": "AR-3",
-      "summary": "Search functionality for videos",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Categories and genres organization",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "User accounts with favorites/watchlist",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "YouTube integration for video upload/playback",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Add support for storing YouTube video URLs in the video metadata model alongside existing blob-based videos",
+      "summary": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
       "reqIds": [
-        "REQ-9"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-10",
-      "summary": "Add backend mutation endpoint for creating videos that accepts either blob data or YouTube URL along with metadata, and stores them appropriately in the video collection",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-11",
-      "summary": "Generate thumbnail images automatically for YouTube videos by extracting them from YouTube's thumbnail API, and store them in the same manner as existing video thumbnails",
-      "reqIds": [
-        "REQ-13"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-12",
-      "summary": "Add visible upload section interface for adding YouTube videos and file uploads",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-13",
-      "summary": "Allow all users to upload videos (public upload access)",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-15",
-      "summary": "Remove admin-only authorization requirement from the backend createVideo endpoint so any authenticated user can create video entries",
-      "reqIds": [
-        "REQ-17"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-16",
-      "summary": "Investigate and fix the YouTube video rendering issue in the VideoPlayer component to ensure YouTube videos display correctly using the iframe embed when the video source is a YouTube URL",
-      "reqIds": [
-        "REQ-20"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-18",
-      "summary": "Verify that the backend createVideo endpoint correctly processes video creation requests from all authenticated users and stores video metadata properly",
-      "reqIds": [
-        "REQ-22"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-19",
-      "summary": "Convert Saanufox into a Progressive Web App (PWA) with manifest.json, service worker, and offline support",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-20",
-      "summary": "Enable home screen installation capability for mobile and desktop browsers",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-21",
-      "summary": "Implement offline functionality allowing cached content access without internet",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-26",
-      "summary": "Register the service worker in frontend/src/main.tsx after the React app mounts, with proper error handling and console logging for registration success/failure",
-      "reqIds": [
-        "REQ-28"
+        "REQ-3"
       ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
   "projectName": "Saanufox",
   "clarification_mode": "instant",
   "clarification_rounds": 0

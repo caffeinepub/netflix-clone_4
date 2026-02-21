@@ -63,9 +63,11 @@ export interface _SERVICE {
   'getAllVideos' : ActorMethod<[], Array<Video>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getUserCount' : ActorMethod<[], bigint>,
   'getUserFavorites' : ActorMethod<[], Array<Video>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'getUserWatchlist' : ActorMethod<[], Array<Video>>,
+  'getVideoDownloadLink' : ActorMethod<[string], string>,
   'getVideoMeta' : ActorMethod<[string], Video>,
   'getVideosByCategory' : ActorMethod<[string], Array<Video>>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
@@ -74,7 +76,6 @@ export interface _SERVICE {
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'searchVideos' : ActorMethod<[string], Array<Video>>,
   'unmarkFavorite' : ActorMethod<[string], undefined>,
-  'uploadVideo' : ActorMethod<[string, Video], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

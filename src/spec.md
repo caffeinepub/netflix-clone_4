@@ -1,14 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Convert Saanufox into a Progressive Web App with offline support and home screen installation capability.
+**Goal:** Perform a complete fresh rebuild of the Saanufox video streaming platform with new canister IDs to permanently resolve the "Canister ID Not Resolved" error.
 
 **Planned changes:**
-- Add manifest.json with app metadata for PWA functionality
-- Link manifest and add theme-color meta tag in index.html
-- Create service worker (sw.js) with caching strategies for offline support
-- Register service worker in main.tsx
-- Create offline fallback page (offline.html)
-- Add apple-touch-icon meta tags for iOS home screen support
+- Generate completely new backend and frontend canister IDs
+- Rebuild entire application from scratch with proper backend canister initialization
+- Configure correct actor routing and gateway resolution settings
+- Verify all existing features remain functional (video upload/playback, authentication, favorites, watchlist, profiles, admin analytics)
 
-**User-visible outcome:** Users can install Saanufox on their home screen like a native app and access cached content offline. The app will work seamlessly without internet connection for previously viewed content.
+**User-visible outcome:** Users can access the Saanufox streaming platform without encountering the "Canister ID Not Resolved" error, with all video streaming, authentication, and profile features working correctly.

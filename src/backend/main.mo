@@ -12,15 +12,11 @@ import Runtime "mo:core/Runtime";
 import AccessControl "authorization/access-control";
 import MixinAuthorization "authorization/MixinAuthorization";
 
-
-
 actor {
-  // Include storage for video files and authorization
   include MixinStorage();
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
 
-  // Video Metadata
   public type VideoSource = {
     #blob;
     #youtube;
@@ -49,17 +45,15 @@ actor {
     name : Text;
   };
 
-  public type VideoStore = {
+  public type VideoStoreRef = {
     metaData : Video;
-    file : ?Storage.ExternalBlob;
   };
 
-  let videos = Map.empty<Text, VideoStore>();
+  let videos = Map.empty<Text, VideoStoreRef>();
   let userProfiles = Map.empty<Principal, UserProfile>();
   let favorites = Map.empty<Principal, Set.Set<Text>>();
   let watchlists = Map.empty<Principal, Set.Set<Text>>();
 
-  // User Profile Management (required by frontend)
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can access profiles");
@@ -81,33 +75,52 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Create Video - Changed from admin-only to user-level access
-  public shared ({ caller }) func createVideo(metaData : Video) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can create videos");
+  public query ({ caller }) func getUserCount() : async Nat {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can query user count");
     };
-    let videoStore : VideoStore = {
-      metaData;
-      file = null;
-    };
-    videos.add(metaData.id, videoStore);
+    userProfiles.size();
   };
 
-  // Get Video Metadata (public - no auth required)
-  public query func getVideoMeta(id : Text) : async Video {
+  // VIDEO CREATION - Allows any authenticated user to create videos
+  public shared ({ caller }) func createVideo(metaData : Video) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only authenticated users can create videos");
+    };
+    switch (videos.get(metaData.id)) {
+      case (?_) {
+        Runtime.trap("Video with ID '" # metaData.id # "' already exists.");
+      };
+      case (null) {
+        let videoStoreRef : VideoStoreRef = {
+          metaData;
+        };
+        videos.add(metaData.id, videoStoreRef);
+      };
+    };
+  };
+
+  public query ({ caller }) func getVideoMeta(id : Text) : async Video {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can access video metadata");
+    };
     switch (videos.get(id)) {
       case (?videoStore) { videoStore.metaData };
       case (null) { Runtime.trap("Video not found") };
     };
   };
 
-  // Get All Videos (public - no auth required)
-  public query func getAllVideos() : async [Video] {
+  public query ({ caller }) func getAllVideos() : async [Video] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can browse videos");
+    };
     videos.values().map(func(vStore) { vStore.metaData }).toArray();
   };
 
-  // Search Videos (public - no auth required)
-  public query func searchVideos(searchText : Text) : async [Video] {
+  public query ({ caller }) func searchVideos(searchText : Text) : async [Video] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can search videos");
+    };
     let results = List.empty<Video>();
     for ((id, videoStore) in videos.entries()) {
       if (videoStore.metaData.title.contains(#text searchText)) {
@@ -117,8 +130,10 @@ actor {
     results.toArray();
   };
 
-  // Get Videos by Category (public - no auth required)
-  public query func getVideosByCategory(category : Text) : async [Video] {
+  public query ({ caller }) func getVideosByCategory(category : Text) : async [Video] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can browse videos by category");
+    };
     let results = List.empty<Video>();
     for ((id, videoStore) in videos.entries()) {
       if (Text.equal(videoStore.metaData.category, category)) {
@@ -128,7 +143,32 @@ actor {
     results.toArray();
   };
 
-  // Favorites Management
+  public query ({ caller }) func getVideoDownloadLink(videoId : Text) : async Text {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can access download links");
+    };
+    switch (videos.get(videoId)) {
+      case (?videoStore) {
+        let video = videoStore.metaData;
+        switch (video.source) {
+          case (#blob) {
+            switch (video.blobId) {
+              case (?blobId) { blobId };
+              case (null) { Runtime.trap("Blob ID not available for this video") };
+            };
+          };
+          case (#youtube) {
+            switch (video.url) {
+              case (?url) { url };
+              case (null) { Runtime.trap("YouTube URL not available for this video") };
+            };
+          };
+        };
+      };
+      case (null) { Runtime.trap("Video not found") };
+    };
+  };
+
   func getFavoritesForUser(userId : Principal) : Set.Set<Text> {
     switch (favorites.get(userId)) {
       case (null) {
@@ -176,7 +216,6 @@ actor {
     favoritesIter.toArray();
   };
 
-  // Watchlist Management
   func getWatchlistForUser(userId : Principal) : Set.Set<Text> {
     switch (watchlists.get(userId)) {
       case (null) {
@@ -224,23 +263,4 @@ actor {
     );
     entriesIter.toArray();
   };
-
-  // Video Storage Integration
-  public shared ({ caller }) func uploadVideo(blobId : Text, videoMeta : Video) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can upload videos");
-    };
-
-    switch (videos.get(videoMeta.id)) {
-      case (?videoStore) {
-        let updatedVideo = {
-          videoStore with
-          file = ?videoMeta.metaData;
-        };
-        videos.add(videoMeta.id, updatedVideo);
-      };
-      case (null) { Runtime.trap("Video metadata not found.") };
-    };
-  };
 };
-

@@ -2,71 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-manifest-json-file-in-the-frontend-public-directory-with-app-metadata-including-name-saanufox-short-name-description-modern-video-streaming-platform-theme-color-matching-the-dark-cinematic-theme-background-color-display-mode-standalone-start-url-and-icons-array-with-multiple-sizes-192x192-512x512-for-home-screen-installation",
-      "featureTitle": "Create a manifest.json file in the frontend/public directory with app metadata including name 'Saanufox', short_name, description 'Modern video streaming platform', theme_color matching the dark cinematic theme, background_color, display mode 'standalone', start_url, and icons array with multiple sizes (192x192, 512x512) for home screen installation",
-      "files": [
-        "frontend/public/manifest.json"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "http-outcalls@3.0.0"
-      ],
-      "testIds": [
-        "REQ-24"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-link-the-manifest-json-file-in-frontend-index-html-by-adding-a-link-rel-manifest-href-manifest-json-tag-in-the-head-section",
-      "featureTitle": "Link the manifest.json file in frontend/index.html by adding a <link rel='manifest' href='/manifest.json'> tag in the <head> section",
-      "files": [
-        "frontend/index.html"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "http-outcalls@3.0.0"
-      ],
-      "testIds": [
-        "REQ-25"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-theme-color-meta-tag-to-frontend-index-html-matching-the-manifest-theme-color-for-consistent-browser-ui-theming",
-      "featureTitle": "Add theme-color meta tag to frontend/index.html matching the manifest theme_color for consistent browser UI theming",
-      "files": [
-        "frontend/index.html"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "http-outcalls@3.0.0"
-      ],
-      "testIds": [
-        "REQ-26"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-a-service-worker-file-sw-js-in-frontend-public-that-implements-caching-strategies-for-offline-support-including-cache-first-strategy-for-static-assets-js-css-images-and-network-first-strategy-for-api-calls-with-proper-cache-versioning-and-cleanup",
-      "featureTitle": "Create a service worker file (sw.js) in frontend/public that implements caching strategies for offline support, including cache-first strategy for static assets (JS, CSS, images) and network-first strategy for API calls, with proper cache versioning and cleanup",
+      "featureId": "feature-perform-a-complete-fresh-rebuild-of-the-entire-saanufox-video-streaming-platform-with-new-canister-ids-to-resolve-the-persistent-canister-id-not-resolved-error-that-occurs-after-deployment",
+      "featureTitle": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
       "files": [
         "frontend/public/sw.js"
       ],
@@ -81,49 +18,7 @@
         "http-outcalls@3.0.0"
       ],
       "testIds": [
-        "REQ-27"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-an-offline-fallback-page-offline-html-in-frontend-public-that-displays-when-the-user-is-offline-and-requests-uncached-content-with-basic-styling-matching-the-app-theme-and-a-message-indicating-no-internet-connection",
-      "featureTitle": "Create an offline fallback page (offline.html) in frontend/public that displays when the user is offline and requests uncached content, with basic styling matching the app theme and a message indicating no internet connection",
-      "files": [
-        "frontend/public/offline.html"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "http-outcalls@3.0.0"
-      ],
-      "testIds": [
-        "REQ-29"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-apple-touch-icon-meta-tags-to-frontend-index-html-for-ios-home-screen-installation-support-with-appropriate-icon-sizes",
-      "featureTitle": "Add apple-touch-icon meta tags to frontend/index.html for iOS home screen installation support with appropriate icon sizes",
-      "files": [
-        "frontend/index.html"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "http-outcalls@3.0.0"
-      ],
-      "testIds": [
-        "REQ-30"
+        "REQ-1"
       ],
       "confidence": "high"
     }

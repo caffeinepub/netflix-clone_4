@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'saanufox-v1';
+const CACHE_VERSION = 'saanufox-v2-rebuild';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
@@ -21,7 +21,7 @@ const STATIC_ASSETS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing...');
+  console.log('[Service Worker] Installing v2-rebuild...');
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
       console.log('[Service Worker] Caching static assets');
@@ -33,7 +33,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating...');
+  console.log('[Service Worker] Activating v2-rebuild...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(

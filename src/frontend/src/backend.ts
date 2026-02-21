@@ -138,9 +138,11 @@ export interface backendInterface {
     getAllVideos(): Promise<Array<Video>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getUserCount(): Promise<bigint>;
     getUserFavorites(): Promise<Array<Video>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     getUserWatchlist(): Promise<Array<Video>>;
+    getVideoDownloadLink(videoId: string): Promise<string>;
     getVideoMeta(id: string): Promise<Video>;
     getVideosByCategory(category: string): Promise<Array<Video>>;
     isCallerAdmin(): Promise<boolean>;
@@ -149,7 +151,6 @@ export interface backendInterface {
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     searchVideos(searchText: string): Promise<Array<Video>>;
     unmarkFavorite(videoId: string): Promise<void>;
-    uploadVideo(blobId: string, videoMeta: Video): Promise<void>;
 }
 import type { ExternalBlob as _ExternalBlob, UserProfile as _UserProfile, UserRole as _UserRole, Video as _Video, VideoSource as _VideoSource, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -336,6 +337,20 @@ export class Backend implements backendInterface {
             return from_candid_UserRole_n23(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getUserCount(): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUserCount();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUserCount();
+            return result;
+        }
+    }
     async getUserFavorites(): Promise<Array<Video>> {
         if (this.processError) {
             try {
@@ -376,6 +391,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getUserWatchlist();
             return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getVideoDownloadLink(arg0: string): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getVideoDownloadLink(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getVideoDownloadLink(arg0);
+            return result;
         }
     }
     async getVideoMeta(arg0: string): Promise<Video> {
@@ -487,20 +516,6 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.unmarkFavorite(arg0);
-            return result;
-        }
-    }
-    async uploadVideo(arg0: string, arg1: Video): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.uploadVideo(arg0, await to_candid_Video_n10(this._uploadFile, this._downloadFile, arg1));
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.uploadVideo(arg0, await to_candid_Video_n10(this._uploadFile, this._downloadFile, arg1));
             return result;
         }
     }

@@ -45,9 +45,11 @@ export interface backendInterface {
     getAllVideos(): Promise<Array<Video>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getUserCount(): Promise<bigint>;
     getUserFavorites(): Promise<Array<Video>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     getUserWatchlist(): Promise<Array<Video>>;
+    getVideoDownloadLink(videoId: string): Promise<string>;
     getVideoMeta(id: string): Promise<Video>;
     getVideosByCategory(category: string): Promise<Array<Video>>;
     isCallerAdmin(): Promise<boolean>;
@@ -56,5 +58,4 @@ export interface backendInterface {
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     searchVideos(searchText: string): Promise<Array<Video>>;
     unmarkFavorite(videoId: string): Promise<void>;
-    uploadVideo(blobId: string, videoMeta: Video): Promise<void>;
 }

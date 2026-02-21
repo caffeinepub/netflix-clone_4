@@ -48,6 +48,9 @@ export default {
                 card: {
                     DEFAULT: 'oklch(var(--card))',
                     foreground: 'oklch(var(--card-foreground))'
+                },
+                netflix: {
+                    red: 'oklch(var(--netflix-red))',
                 }
             },
             borderRadius: {
@@ -56,8 +59,8 @@ export default {
                 sm: 'calc(var(--radius) - 4px)'
             },
             boxShadow: {
-                'glow': '0 0 20px rgba(255, 50, 50, 0.3)',
-                'glow-lg': '0 0 40px rgba(255, 50, 50, 0.4)',
+                'netflix': '0 4px 20px rgba(0, 0, 0, 0.8)',
+                'netflix-lg': '0 8px 40px rgba(0, 0, 0, 0.9)',
             },
             keyframes: {
                 'accordion-down': {
@@ -67,11 +70,20 @@ export default {
                 'accordion-up': {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' }
+                },
+                'fade-in': {
+                    from: { opacity: '0' },
+                    to: { opacity: '1' }
                 }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
-                'accordion-up': 'accordion-up 0.2s ease-out'
+                'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.3s ease-in'
+            },
+            spacing: {
+                '18': '4.5rem',
+                '88': '22rem',
             }
         }
     },

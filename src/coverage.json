@@ -1,103 +1,85 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-21T01:05:21.050Z",
+  "generatedAt": "2026-02-21T16:29:31.860Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 7,
-    "implemented": 6,
+    "total": 3,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-24",
-        "summary": "Create a manifest.json file in the frontend/public directory with app metadata including name 'Saanufox', short_name, description 'Modern video streaming platform', theme_color matching the dark cinematic theme, background_color, display mode 'standalone', start_url, and icons array with multiple sizes (192x192, 512x512) for home screen installation",
+        "id": "REQ-1",
+        "summary": "Perform a complete fresh rebuild of the entire Saanufox video streaming platform with new canister IDs to resolve the persistent 'Canister ID Not Resolved' error that occurs after deployment",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/manifest.json"
-        ],
-        "matchedFiles": [
-          "frontend/public/manifest.json"
-        ]
-      },
-      {
-        "id": "REQ-25",
-        "summary": "Link the manifest.json file in frontend/index.html by adding a <link rel='manifest' href='/manifest.json'> tag in the <head> section",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/index.html"
-        ],
-        "matchedFiles": [
-          "frontend/index.html"
-        ]
-      },
-      {
-        "id": "REQ-26",
-        "summary": "Add theme-color meta tag to frontend/index.html matching the manifest theme_color for consistent browser UI theming",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/index.html"
-        ],
-        "matchedFiles": [
-          "frontend/index.html"
-        ]
-      },
-      {
-        "id": "REQ-27",
-        "summary": "Create a service worker file (sw.js) in frontend/public that implements caching strategies for offline support, including cache-first strategy for static assets (JS, CSS, images) and network-first strategy for API calls, with proper cache versioning and cleanup",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/sw.js"
+          "frontend/index.html",
+          "frontend/src/main.tsx",
+          "frontend/src/App.tsx",
+          "frontend/public/manifest.json",
+          "frontend/public/sw.js",
+          "frontend/public/offline.html"
         ],
         "matchedFiles": [
           "frontend/public/sw.js"
         ]
       },
       {
-        "id": "REQ-28",
-        "summary": "Register the service worker in frontend/src/main.tsx after the React app mounts, with proper error handling and console logging for registration success/failure",
-        "status": "missing",
-        "plannedFiles": [
-          "frontend/src/main.tsx"
-        ],
+        "id": "REQ-2",
+        "summary": "Ensure proper backend canister initialization with correct actor configuration and routing setup to prevent gateway resolution failures",
+        "status": "unknown",
+        "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-29",
-        "summary": "Create an offline fallback page (offline.html) in frontend/public that displays when the user is offline and requests uncached content, with basic styling matching the app theme and a message indicating no internet connection",
-        "status": "implemented",
+        "id": "REQ-3",
+        "summary": "Verify all existing video streaming features work correctly after fresh rebuild including video CRUD operations, blob storage, access control, user profiles, favorites, watchlist, and admin analytics",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/public/offline.html"
+          "frontend/src/hooks/useActor.ts",
+          "frontend/src/hooks/useInternetIdentity.ts",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/LoginButton.tsx",
+          "frontend/src/components/ProfileSetupModal.tsx",
+          "frontend/src/pages/AdminUpload.tsx",
+          "frontend/src/pages/Analytics.tsx",
+          "frontend/src/pages/Browse.tsx",
+          "frontend/src/pages/Watch.tsx",
+          "frontend/src/pages/Favorites.tsx",
+          "frontend/src/pages/Watchlist.tsx",
+          "frontend/src/pages/Profile.tsx",
+          "frontend/src/pages/Settings.tsx",
+          "frontend/src/pages/Search.tsx",
+          "frontend/src/pages/Category.tsx",
+          "frontend/src/components/VideoPlayer.tsx",
+          "frontend/src/components/VideoCard.tsx",
+          "frontend/src/components/VideoGrid.tsx",
+          "frontend/src/components/VideoRow.tsx",
+          "frontend/src/components/HeroBanner.tsx",
+          "frontend/src/components/CategoryFilter.tsx",
+          "frontend/src/components/FavoriteButton.tsx",
+          "frontend/src/components/WatchlistButton.tsx",
+          "frontend/src/components/DownloadButton.tsx",
+          "frontend/src/components/SearchBar.tsx",
+          "frontend/src/components/Layout.tsx",
+          "frontend/src/utils/youtubeHelpers.ts",
+          "frontend/src/utils/fileHelpers.ts",
+          "frontend/src/utils/urlParams.ts",
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js"
         ],
-        "matchedFiles": [
-          "frontend/public/offline.html"
-        ]
-      },
-      {
-        "id": "REQ-30",
-        "summary": "Add apple-touch-icon meta tags to frontend/index.html for iOS home screen installation support with appropriate icon sizes",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/index.html"
-        ],
-        "matchedFiles": [
-          "frontend/index.html"
-        ]
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.html",
-    "frontend/public/assets/generated/apple-touch-icon.dim_180x180.png",
-    "frontend/public/assets/generated/pwa-icon-192.dim_192x192.png",
-    "frontend/public/assets/generated/pwa-icon-512.dim_512x512.png",
-    "frontend/public/manifest.json",
-    "frontend/public/offline.html",
     "frontend/public/sw.js",
     "project_state.json",
     "scratch/component-selection.json",

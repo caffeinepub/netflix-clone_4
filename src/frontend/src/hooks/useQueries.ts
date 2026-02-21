@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { Video, UserProfile } from '../backend';
+import { Video, UserProfile, VideoSource } from '../backend';
 
 // User Profile Queries
 export function useGetCallerUserProfile() {
@@ -34,6 +34,23 @@ export function useSaveCallerUserProfile() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['userCount'] });
+    },
+  });
+}
+
+export function useUpdateUserProfile() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (profile: UserProfile) => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.saveCallerUserProfile(profile);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentUserProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['userCount'] });
     },
   });
 }
@@ -47,6 +64,20 @@ export function useIsCallerAdmin() {
     queryFn: async () => {
       if (!actor) return false;
       return actor.isCallerAdmin();
+    },
+    enabled: !!actor && !isFetching,
+  });
+}
+
+// User Count Query
+export function useGetUserCount() {
+  const { actor, isFetching } = useActor();
+
+  return useQuery<bigint>({
+    queryKey: ['userCount'],
+    queryFn: async () => {
+      if (!actor) throw new Error('Actor not available');
+      return actor.getUserCount();
     },
     enabled: !!actor && !isFetching,
   });
@@ -113,16 +144,69 @@ export function useAddVideo() {
 
   return useMutation({
     mutationFn: async (video: Video) => {
-      if (!actor) throw new Error('Actor not available');
-      return actor.createVideo(video);
+      console.log('useAddVideo mutation started');
+      
+      if (!actor) {
+        console.error('Actor not available in mutation');
+        throw new Error('Actor not available');
+      }
+
+      console.log('Calling actor.createVideo with video:', {
+        id: video.id,
+        title: video.title,
+        category: video.category,
+        genre: video.genre,
+        source: video.source,
+      });
+
+      try {
+        const result = await actor.createVideo(video);
+        console.log('actor.createVideo completed successfully');
+        return result;
+      } catch (error: any) {
+        console.error('Error in actor.createVideo:', error);
+        console.error('Error details:', {
+          name: error?.name,
+          message: error?.message,
+          stack: error?.stack,
+        });
+        
+        // Re-throw with more context
+        if (error?.message) {
+          throw new Error(error.message);
+        } else {
+          throw new Error('Unknown error occurred while creating video');
+        }
+      }
     },
     onSuccess: () => {
+      console.log('Video creation successful, invalidating queries');
       // Invalidate all video-related queries to refresh the UI
       queryClient.invalidateQueries({ queryKey: ['videos'] });
     },
     onError: (error: any) => {
-      console.error('Error creating video:', error);
-      throw error;
+      console.error('Mutation onError handler:', error);
+      console.error('Error type:', typeof error);
+      console.error('Error properties:', Object.keys(error || {}));
+    },
+  });
+}
+
+// Download Video Mutation
+export function useDownloadVideo() {
+  const { actor } = useActor();
+
+  return useMutation({
+    mutationFn: async ({ videoId, videoTitle, videoSource }: { videoId: string; videoTitle: string; videoSource: VideoSource }) => {
+      if (!actor) throw new Error('Actor not available');
+      
+      const downloadLink = await actor.getVideoDownloadLink(videoId);
+      
+      return {
+        downloadLink,
+        videoTitle,
+        videoSource,
+      };
     },
   });
 }

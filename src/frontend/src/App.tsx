@@ -9,6 +9,9 @@ import Category from './pages/Category';
 import Favorites from './pages/Favorites';
 import Watchlist from './pages/Watchlist';
 import AdminUpload from './pages/AdminUpload';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Analytics from './pages/Analytics';
 import ProfileSetupModal from './components/ProfileSetupModal';
 
 const rootRoute = createRootRoute({
@@ -59,10 +62,28 @@ const watchlistRoute = createRoute({
   component: Watchlist,
 });
 
+const profileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/profile',
+  component: Profile,
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/settings',
+  component: Settings,
+});
+
 const adminUploadRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/admin/upload',
   component: AdminUpload,
+});
+
+const analyticsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/analytics',
+  component: Analytics,
 });
 
 const routeTree = rootRoute.addChildren([
@@ -72,7 +93,10 @@ const routeTree = rootRoute.addChildren([
   categoryRoute,
   favoritesRoute,
   watchlistRoute,
+  profileRoute,
+  settingsRoute,
   adminUploadRoute,
+  analyticsRoute,
 ]);
 
 const router = createRouter({ routeTree });
