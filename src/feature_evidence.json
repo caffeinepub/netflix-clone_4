@@ -1,4 +1,111 @@
 {
   "kind": "feature_evidence_report",
-  "features": []
+  "features": [
+    {
+      "featureId": "feature-update-the-pwa-manifest-frontend-public-manifest-json-to-include-all-required-fields-for-installability-start-url-scope-orientation-preference-and-comprehensive-icon-sizes-192x192-512x512-with-purpose-annotations-for-maskable-and-any",
+      "featureTitle": "Update the PWA manifest (frontend/public/manifest.json) to include all required fields for installability: start_url, scope, orientation preference, and comprehensive icon sizes (192x192, 512x512) with purpose annotations for maskable and any",
+      "files": [
+        "frontend/public/manifest.json"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-enhance-the-service-worker-frontend-public-sw-js-to-implement-a-proper-offline-first-strategy-with-runtime-caching-for-video-thumbnails-and-api-responses-while-maintaining-the-existing-exclusions-for-internet-identity-and-ic-mainnet-urls",
+      "featureTitle": "Enhance the service worker (frontend/public/sw.js) to implement a proper offline-first strategy with runtime caching for video thumbnails and API responses, while maintaining the existing exclusions for Internet Identity and IC mainnet URLs",
+      "files": [
+        "frontend/public/sw.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-install-prompt-component-to-the-frontend-that-detects-when-the-pwa-is-installable-and-displays-a-user-friendly-banner-or-button-encouraging-users-to-install-the-app-to-their-home-screen",
+      "featureTitle": "Add an install prompt component to the frontend that detects when the PWA is installable and displays a user-friendly banner or button encouraging users to install the app to their home screen",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/InstallPrompt.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-frontend-index-html-to-include-comprehensive-pwa-meta-tags-including-apple-mobile-web-app-capable-apple-mobile-web-app-status-bar-style-and-proper-theme-color-meta-tags-for-enhanced-mobile-experience",
+      "featureTitle": "Update frontend/index.html to include comprehensive PWA meta tags including apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, and proper theme-color meta tags for enhanced mobile experience",
+      "files": [
+        "frontend/index.html"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-improve-the-offline-fallback-page-frontend-public-offline-html-to-include-helpful-information-about-offline-functionality-cached-content-availability-and-a-more-engaging-visual-design-consistent-with-the-saanufox-brand",
+      "featureTitle": "Improve the offline fallback page (frontend/public/offline.html) to include helpful information about offline functionality, cached content availability, and a more engaging visual design consistent with the Saanufox brand",
+      "files": [
+        "frontend/public/offline.html"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    }
+  ]
 }

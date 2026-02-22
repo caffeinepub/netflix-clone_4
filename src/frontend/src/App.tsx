@@ -12,6 +12,7 @@ import AdminUpload from './pages/AdminUpload';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import ProfileSetupModal from './components/ProfileSetupModal';
+import InstallPrompt from './components/InstallPrompt';
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -20,6 +21,7 @@ const rootRoute = createRootRoute({
         <Outlet />
       </Layout>
       <ProfileSetupModal />
+      <InstallPrompt />
       <Toaster />
     </>
   ),

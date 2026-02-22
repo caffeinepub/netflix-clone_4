@@ -13,8 +13,8 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            color: #f5f5f5;
+            background: #000000;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,77 +24,154 @@
         
         .container {
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
         }
         
         .logo {
             font-size: 3rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #ff3232 0%, #ff6b6b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #e50914;
             margin-bottom: 2rem;
+            letter-spacing: -0.02em;
         }
         
         .icon {
             width: 120px;
             height: 120px;
             margin: 0 auto 2rem;
-            background: rgba(255, 50, 50, 0.1);
+            background: rgba(229, 9, 20, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 3px solid rgba(255, 50, 50, 0.3);
+            border: 3px solid rgba(229, 9, 20, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
         }
         
         .icon svg {
             width: 60px;
             height: 60px;
-            stroke: #ff3232;
+            stroke: #e50914;
         }
         
         h1 {
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: #f5f5f5;
+            color: #ffffff;
+            font-weight: 600;
         }
         
         p {
             font-size: 1.125rem;
-            color: #a0a0a0;
+            color: #b3b3b3;
             line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
             margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .info-box h2 {
+            font-size: 1.125rem;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-box li {
+            color: #b3b3b3;
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .info-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #e50914;
+            font-weight: bold;
         }
         
         .retry-button {
             display: inline-block;
-            padding: 12px 32px;
-            background: linear-gradient(135deg, #ff3232 0%, #ff6b6b 100%);
+            padding: 14px 40px;
+            background: #e50914;
             color: white;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 4px;
             font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
         }
         
         .retry-button:hover {
+            background: #f40612;
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 50, 50, 0.3);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
         
         .retry-button:active {
             transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: #e50914;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #e50914;
+            border-radius: 50%;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">Saanufox</div>
+        <div class="logo">SAANUFOX</div>
         
         <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -102,11 +179,25 @@
             </svg>
         </div>
         
+        <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span>Offline Mode</span>
+        </div>
+        
         <h1>No Internet Connection</h1>
-        <p>It looks like you're offline. Please check your internet connection and try again.</p>
+        <p>You're currently offline. Check your connection and try again.</p>
+        
+        <div class="info-box">
+            <h2>What's Available Offline:</h2>
+            <ul>
+                <li>Previously viewed video thumbnails</li>
+                <li>Browsed content from your last session</li>
+                <li>Cached images and interface elements</li>
+            </ul>
+        </div>
         
         <button class="retry-button" onclick="window.location.reload()">
-            Retry
+            Retry Connection
         </button>
     </div>
 </body>

@@ -6,10 +6,11 @@ import CategoryFilter from '../components/CategoryFilter';
 import { Loader2 } from 'lucide-react';
 
 export default function Browse() {
-  const { data: videos = [], isLoading } = useGetAllVideos();
-  const { identity } = useInternetIdentity();
+  const { data: videos = [], isLoading, isError, error } = useGetAllVideos();
+  const { identity, loginStatus } = useInternetIdentity();
 
   const isAuthenticated = !!identity;
+  const isInitializing = loginStatus === 'initializing';
 
   // Group videos by category
   const videosByCategory = videos.reduce((acc, video) => {
@@ -29,10 +30,24 @@ export default function Browse() {
     return acc;
   }, {} as Record<string, typeof videos>);
 
-  if (isLoading) {
+  if (isInitializing || isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-12 h-12 animate-spin text-netflix-red" />
+      <div className="flex items-center justify-center min-h-screen bg-black">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-netflix-red mx-auto mb-4" />
+          <p className="text-white/60">Loading Saanufox...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black">
+        <div className="text-center px-4">
+          <p className="text-netflix-red text-lg mb-2">Failed to load videos</p>
+          <p className="text-white/60 text-sm">{error?.message || 'Please try again later'}</p>
+        </div>
       </div>
     );
   }

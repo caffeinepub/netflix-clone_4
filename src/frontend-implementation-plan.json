@@ -1,33 +1,100 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Deploy Saanufox to Production Mainnet",
+  "title": "Enhance PWA capabilities with offline support and installability",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Deploy the current application (Version 17) to Internet Computer mainnet with no code changes",
+      "summary": "Update PWA manifest with comprehensive installability fields including start_url, scope, orientation, and maskable icon configurations",
       "acceptanceCriteria": [
-        "Application is successfully deployed to Internet Computer mainnet",
-        "All backend canisters are running on mainnet",
-        "Frontend is accessible via mainnet canister URL",
-        "Service worker and PWA features are functional in production",
-        "All existing features (video streaming, authentication, favorites, watchlist) work correctly in production environment"
+        "Manifest includes start_url pointing to the app root",
+        "Manifest includes scope covering the entire application",
+        "Icon sizes include both 192x192 and 512x512 dimensions",
+        "Icons have purpose field set to 'maskable any' for better platform support",
+        "Manifest passes PWA installability checks in browser DevTools"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/manifest.json",
+          "operation": "modify",
+          "description": "Add start_url, scope, and orientation fields. Update icons array to include the four generated PWA icons from frontend/public/assets/generated/icon-192.dim_192x192.png, frontend/public/assets/generated/icon-512.dim_512x512.png, frontend/public/assets/generated/icon-maskable-192.dim_192x192.png, and frontend/public/assets/generated/icon-maskable-512.dim_512x512.png. Set purpose field to 'any' for standard icons and 'maskable' for maskable variants to support different platform requirements."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Enhance service worker with offline-first caching strategy for video thumbnails and API responses while preserving Internet Identity exclusions",
+      "acceptanceCriteria": [
+        "Service worker caches video thumbnails for offline viewing",
+        "Service worker implements stale-while-revalidate strategy for API responses",
+        "Existing Internet Identity and IC mainnet URL exclusions remain intact",
+        "Offline fallback page displays when network requests fail",
+        "Cache versioning allows for proper updates when new versions deploy"
       ],
       "file_operations": [
         {
           "path": "frontend/public/sw.js",
           "operation": "modify",
-          "description": "Verify service worker cache strategy is configured for production mainnet deployment with appropriate cache version and asset URLs. Ensure cache-first strategy for static assets and network-first for API calls remain functional in production environment. No code changes required unless environment-specific adjustments are needed."
+          "description": "Add runtime caching strategies: implement cache-first with network fallback for video thumbnail images (matching patterns for blob URLs and YouTube thumbnails), implement stale-while-revalidate for API responses to the backend canister. Add cache versioning with a CACHE_VERSION constant and implement cache cleanup logic on service worker activation. Ensure the offline fallback page (frontend/public/offline.html) is served when network requests fail for navigation requests. Preserve all existing exclusion logic for Internet Identity and IC mainnet URLs."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add install prompt component that detects PWA installability and displays user-friendly install banner with dismissible behavior",
+      "acceptanceCriteria": [
+        "Component listens for the beforeinstallprompt event",
+        "Install prompt UI appears only when app is installable",
+        "Users can dismiss the prompt and it respects their choice",
+        "Clicking the install button triggers the native installation flow",
+        "Component hides automatically after successful installation"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/InstallPrompt.tsx",
+          "operation": "create",
+          "description": "Create a component that listens for the beforeinstallprompt event and stores the event. Display a dismissible banner or card with Netflix-themed styling (using existing design tokens from frontend/src/index.css) that prompts users to install the app. Store dismissal state in localStorage to respect user choice. Implement click handler that calls prompt() on the stored event and tracks the installation outcome. Hide the component automatically after successful installation or if already installed. Use Saanufox branding and follow the existing design system."
         },
         {
-          "path": "frontend/src/hooks/useInternetIdentity.ts",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Verify Internet Identity authentication is configured for mainnet environment. Ensure the AuthClient is using production Internet Identity canister URLs and delegation settings are appropriate for mainnet. No code changes required unless environment configuration needs adjustment."
-        },
+          "description": "Import and render the InstallPrompt component within the main app layout, positioned appropriately so it appears when the app is installable but doesn't obstruct core navigation or content."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Update index.html with comprehensive PWA meta tags for enhanced mobile experience including Apple-specific tags and theme colors",
+      "acceptanceCriteria": [
+        "HTML includes apple-mobile-web-app-capable meta tag set to yes",
+        "HTML includes apple-mobile-web-app-status-bar-style with appropriate styling",
+        "Theme color meta tags are present for both light and dark modes",
+        "Apple touch icon references are properly configured",
+        "Viewport meta tag is optimized for mobile devices"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/public/manifest.json",
+          "path": "frontend/index.html",
           "operation": "modify",
-          "description": "Verify PWA manifest references correct mainnet URLs and icon paths. Ensure start_url and scope are set appropriately for production deployment. No code changes required unless production URLs differ from current configuration."
+          "description": "Add apple-mobile-web-app-capable meta tag set to 'yes'. Add apple-mobile-web-app-status-bar-style meta tag set to 'black-translucent' for immersive experience. Add theme-color meta tags for both light and dark color schemes matching the Netflix-themed palette from the existing design system. Update apple-touch-icon link to reference the generated apple touch icon at frontend/public/assets/generated/apple-touch-icon.dim_180x180.png. Verify viewport meta tag is present and optimized for mobile devices."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Improve offline fallback page with helpful information about cached content, engaging visual design consistent with Saanufox branding",
+      "acceptanceCriteria": [
+        "Offline page explains which features are available without internet",
+        "Page includes visual indicators showing offline status clearly",
+        "Design matches the Saanufox Netflix-inspired theme",
+        "Retry button remains functional and provides user feedback",
+        "Page is fully self-contained with inline styles and no external dependencies"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/offline.html",
+          "operation": "modify",
+          "description": "Enhance the offline page with more detailed messaging about offline functionality: explain that previously viewed videos and browsed content may be available from cache. Add visual offline status indicators using inline SVG icons or CSS. Update the design to better match the Netflix-inspired Saanufox theme using inline styles that replicate the color scheme from frontend/src/index.css (dark background, red accents). Improve the retry button with hover states and better visual feedback. Ensure the page remains fully self-contained with all styles and assets inline or base64-encoded, with no external dependencies."
         }
       ]
     }

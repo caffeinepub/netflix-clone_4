@@ -1,42 +1,131 @@
 {
   "kind": "build_request",
-  "title": "Deploy to production",
+  "title": "Enhance PWA capabilities with offline support and installability",
   "projectName": "Saanufox",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Deploy the current application build (Version 17) to production on Internet Computer mainnet",
-      "target": "both",
+      "text": "Update the PWA manifest (frontend/public/manifest.json) to include all required fields for installability: start_url, scope, orientation preference, and comprehensive icon sizes (192x192, 512x512) with purpose annotations for maskable and any",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-last"
         ],
         "quotes": [
-          "Ha isko kar do"
+          "Progressive wab app pwa banao"
         ]
       },
       "acceptanceCriteria": [
-        "Application is successfully deployed to Internet Computer mainnet",
-        "All backend canisters are running on mainnet",
-        "Frontend is accessible via mainnet canister URL",
-        "Service worker and PWA features are functional in production",
-        "All existing features (video streaming, authentication, favorites, watchlist) work correctly in production environment"
+        "Manifest includes start_url pointing to the app root",
+        "Manifest includes scope covering the entire application",
+        "Icon sizes include both 192x192 and 512x512 dimensions",
+        "Icons have purpose field set to 'maskable any' for better platform support",
+        "Manifest passes PWA installability checks in browser DevTools"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Enhance the service worker (frontend/public/sw.js) to implement a proper offline-first strategy with runtime caching for video thumbnails and API responses, while maintaining the existing exclusions for Internet Identity and IC mainnet URLs",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Progressive wab app pwa banao"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Service worker caches video thumbnails for offline viewing",
+        "Service worker implements stale-while-revalidate strategy for API responses",
+        "Existing Internet Identity and IC mainnet URL exclusions remain intact",
+        "Offline fallback page displays when network requests fail",
+        "Cache versioning allows for proper updates when new versions deploy"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add an install prompt component to the frontend that detects when the PWA is installable and displays a user-friendly banner or button encouraging users to install the app to their home screen",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Progressive wab app pwa banao"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Component listens for the beforeinstallprompt event",
+        "Install prompt UI appears only when app is installable",
+        "Users can dismiss the prompt and it respects their choice",
+        "Clicking the install button triggers the native installation flow",
+        "Component hides automatically after successful installation"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Update frontend/index.html to include comprehensive PWA meta tags including apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, and proper theme-color meta tags for enhanced mobile experience",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Progressive wab app pwa banao"
+        ]
+      },
+      "acceptanceCriteria": [
+        "HTML includes apple-mobile-web-app-capable meta tag set to yes",
+        "HTML includes apple-mobile-web-app-status-bar-style with appropriate styling",
+        "Theme color meta tags are present for both light and dark modes",
+        "Apple touch icon references are properly configured",
+        "Viewport meta tag is optimized for mobile devices"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Improve the offline fallback page (frontend/public/offline.html) to include helpful information about offline functionality, cached content availability, and a more engaging visual design consistent with the Saanufox brand",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-last"
+        ],
+        "quotes": [
+          "Progressive wab app pwa banao"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Offline page explains which features are available without internet",
+        "Page includes visual indicators showing offline status clearly",
+        "Design matches the Saanufox Netflix-inspired theme",
+        "Retry button remains functional and provides user feedback",
+        "Page is fully self-contained with inline styles and no external dependencies"
       ]
     }
   ],
   "constraints": [
-    "Maintain all existing functionality during deployment",
-    "Preserve service worker cache strategy for offline support",
-    "Keep Internet Identity authentication configuration for mainnet"
+    "Do not modify frontend/src/hooks/useInternetIdentity.ts",
+    "Do not modify frontend/src/hooks/useActor.ts",
+    "Do not modify frontend/src/main.tsx",
+    "Preserve existing service worker exclusions for Internet Identity and IC mainnet URLs",
+    "Maintain the existing Netflix-inspired design system and color scheme"
   ],
   "nonGoals": [
-    "Making code changes or adding new features",
-    "Modifying the backend schema or data structures",
-    "Changing the UI design or user experience"
+    "Creating a native Android or iOS application",
+    "Publishing to Google Play Store or Apple App Store",
+    "Adding push notification functionality",
+    "Implementing background sync for video uploads",
+    "Adding native device features like camera or GPS access"
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "App icon suitable for PWA with transparent background, modern geometric design incorporating fox motif (icon-192.dim_192x192.png)",
+      "High-resolution app icon for PWA with transparent background, modern geometric design incorporating fox motif (icon-512.dim_512x512.png)",
+      "Maskable app icon with safe zone padding, centered fox motif on solid background (icon-maskable-192.dim_192x192.png)",
+      "High-resolution maskable app icon with safe zone padding, centered fox motif on solid background (icon-maskable-512.dim_512x512.png)"
+    ],
     "edits": []
   }
 }

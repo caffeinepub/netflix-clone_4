@@ -1,18 +1,61 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
+  "summary": "Web application with PWA (Progressive Web App) features",
+  "architectural_notes": [
+    "Web application targeting browser deployment",
+    "PWA implementation required for installable app experience"
+  ],
   "known_issues": [],
   "isFixRequest": false,
-  "existing_features": [],
-  "new_feature_requests": [
+  "imageRequirements": "## Required Images\n- App icon suitable for PWA with transparent background, modern geometric design incorporating fox motif (icon-192.dim_192x192.png)\n- High-resolution app icon for PWA with transparent background, modern geometric design incorporating fox motif (icon-512.dim_512x512.png)\n- Maskable app icon with safe zone padding, centered fox motif on solid background (icon-maskable-192.dim_192x192.png)\n- High-resolution maskable app icon with safe zone padding, centered fox motif on solid background (icon-maskable-512.dim_512x512.png)",
+  "existing_features": [
     {
-      "id": "AR-1",
-      "summary": "Deploy the current application build (Version 17) to production on Internet Computer mainnet",
+      "id": "feature-update-the-pwa-manifest-frontend-public-manifest-json-to-include-all-required-fields-for-installability-start-url-scope-orientation-preference-and-comprehensive-icon-sizes-192x192-512x512-with-purpose-annotations-for-maskable-and-any",
+      "title": "Update the PWA manifest (frontend/public/manifest.json) to include all required fields for installability: start_url, scope, orientation preference, and comprehensive icon sizes (192x192, 512x512) with purpose annotations for maskable and any",
       "reqIds": [
         "REQ-1"
       ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-service-worker-frontend-public-sw-js-to-implement-a-proper-offline-first-strategy-with-runtime-caching-for-video-thumbnails-and-api-responses-while-maintaining-the-existing-exclusions-for-internet-identity-and-ic-mainnet-urls",
+      "title": "Enhance the service worker (frontend/public/sw.js) to implement a proper offline-first strategy with runtime caching for video thumbnails and API responses, while maintaining the existing exclusions for Internet Identity and IC mainnet URLs",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-install-prompt-component-to-the-frontend-that-detects-when-the-pwa-is-installable-and-displays-a-user-friendly-banner-or-button-encouraging-users-to-install-the-app-to-their-home-screen",
+      "title": "Add an install prompt component to the frontend that detects when the PWA is installable and displays a user-friendly banner or button encouraging users to install the app to their home screen",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-frontend-index-html-to-include-comprehensive-pwa-meta-tags-including-apple-mobile-web-app-capable-apple-mobile-web-app-status-bar-style-and-proper-theme-color-meta-tags-for-enhanced-mobile-experience",
+      "title": "Update frontend/index.html to include comprehensive PWA meta tags including apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, and proper theme-color meta tags for enhanced mobile experience",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-offline-fallback-page-frontend-public-offline-html-to-include-helpful-information-about-offline-functionality-cached-content-availability-and-a-more-engaging-visual-design-consistent-with-the-saanufox-brand",
+      "title": "Improve the offline fallback page (frontend/public/offline.html) to include helpful information about offline functionality, cached content availability, and a more engaging visual design consistent with the Saanufox brand",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Add PWA support with manifest and service worker",
+      "reqIds": [],
       "status": "pending"
     }
   ],

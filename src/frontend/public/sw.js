@@ -1,31 +1,23 @@
-const CACHE_VERSION = 'saanufox-v3-mainnet';
+const CACHE_VERSION = 'saanufox-v5-mainnet';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
+const IMAGE_CACHE = `${CACHE_VERSION}-images`;
 
 // Assets to cache on install
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/offline.html',
-  '/assets/generated/pwa-icon-192.dim_192x192.png',
-  '/assets/generated/pwa-icon-512.dim_512x512.png',
-  '/assets/generated/apple-touch-icon.dim_180x180.png',
-  '/assets/generated/hero-banner.dim_1920x400.png',
-  '/assets/generated/video-thumb-1.dim_400x225.png',
-  '/assets/generated/video-thumb-2.dim_400x225.png',
-  '/assets/generated/video-thumb-3.dim_400x225.png',
-  '/assets/generated/video-thumb-4.dim_400x225.png',
-  '/assets/generated/video-thumb-5.dim_400x225.png',
-  '/assets/generated/video-thumb-6.dim_400x225.png'
+  '/offline.html'
 ];
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[Service Worker] Installing v3-mainnet...');
+  console.log('[Service Worker] Installing v5-mainnet...');
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
       console.log('[Service Worker] Caching static assets');
-      return cache.addAll(STATIC_ASSETS);
+      return cache.addAll(STATIC_ASSETS).catch((error) => {
+        console.error('[Service Worker] Failed to cache assets:', error);
+        return Promise.resolve();
+      });
     })
   );
   self.skipWaiting();
@@ -33,12 +25,15 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating v3-mainnet...');
+  console.log('[Service Worker] Activating v5-mainnet...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName.startsWith('saanufox-') && cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+          if (cacheName.startsWith('saanufox-') && 
+              cacheName !== STATIC_CACHE && 
+              cacheName !== DYNAMIC_CACHE && 
+              cacheName !== IMAGE_CACHE) {
             console.log('[Service Worker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
@@ -54,7 +49,7 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip Internet Identity and IC mainnet URLs
+  // Skip Internet Identity and IC mainnet URLs - CRITICAL for production
   if (
     url.hostname.includes('identity.ic0.app') ||
     url.hostname.includes('identity.internetcomputer.org') ||
@@ -62,25 +57,55 @@ self.addEventListener('fetch', (event) => {
     url.hostname.includes('icp0.io') ||
     url.hostname.includes('raw.icp0.io') ||
     url.pathname.includes('/.well-known/') ||
-    request.url.includes('canister')
+    url.pathname.includes('/api/') ||
+    request.url.includes('canister') ||
+    request.method !== 'GET'
   ) {
+    // Let these requests pass through without caching
     return;
   }
 
-  // Handle navigation requests
+  // Handle navigation requests - network first with offline fallback
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .catch(() => {
-          return caches.match('/offline.html');
+          return caches.match('/offline.html').then((response) => {
+            return response || fetch(request);
+          });
         })
+    );
+    return;
+  }
+
+  // Cache-first strategy for images (including video thumbnails)
+  if (request.destination === 'image') {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(IMAGE_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            }).catch((error) => {
+              console.error('[Service Worker] Failed to cache image:', error);
+            });
+          }
+          return networkResponse;
+        }).catch((error) => {
+          console.error('[Service Worker] Image fetch failed:', error);
+          throw error;
+        });
+      })
     );
     return;
   }
 
   // Cache-first strategy for static assets
   if (
-    request.destination === 'image' ||
     request.destination === 'style' ||
     request.destination === 'script' ||
     request.destination === 'font'
@@ -91,21 +116,46 @@ self.addEventListener('fetch', (event) => {
           return cachedResponse;
         }
         return fetch(request).then((networkResponse) => {
-          // Cache successful responses
-          if (networkResponse && networkResponse.status === 200) {
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
             const responseClone = networkResponse.clone();
             caches.open(DYNAMIC_CACHE).then((cache) => {
               cache.put(request, responseClone);
+            }).catch((error) => {
+              console.error('[Service Worker] Failed to cache response:', error);
             });
           }
           return networkResponse;
+        }).catch((error) => {
+          console.error('[Service Worker] Fetch failed:', error);
+          throw error;
         });
       })
     );
     return;
   }
 
-  // Network-first for API calls
+  // Stale-while-revalidate for API responses (non-canister)
+  if (url.pathname.startsWith('/assets/')) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        const fetchPromise = fetch(request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            }).catch((error) => {
+              console.error('[Service Worker] Failed to cache asset:', error);
+            });
+          }
+          return networkResponse;
+        });
+        return cachedResponse || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // Network-first for everything else
   event.respondWith(
     fetch(request).catch(() => {
       return caches.match(request);

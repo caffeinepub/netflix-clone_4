@@ -1,5 +1,5 @@
 {
-  "frontend/src/App.tsx": "Main application component with TanStack Router setup including all routes (browse, watch, search, category, favorites, watchlist, profile, settings, admin upload) wrapped with ThemeProvider, Layout, and Toaster - Analytics route removed.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup including all routes wrapped with ThemeProvider, Layout, ProfileSetupModal, InstallPrompt, and Toaster components for complete PWA experience.",
   "frontend/src/components/Layout.tsx": "Netflix-style layout with fixed black header featuring SAANUFOX branding in red, horizontal navigation with admin-only Upload link (visible only when useIsCallerAdmin returns true), icon-based user controls, and minimalist footer with attribution - Analytics navigation removed from both desktop and mobile menus.",
   "frontend/src/components/LoginButton.tsx": "Authentication button component using Internet Identity hook to handle login/logout with loading states and query cache clearing.",
   "frontend/src/components/ProfileSetupModal.tsx": "Modal dialog that prompts new users to enter their name on first login, with proper actor dependency handling to prevent flash.",
@@ -10,7 +10,7 @@
   "frontend/src/components/WatchlistButton.tsx": "Toggle button for adding/removing videos from watchlist with bookmark icon that fills when active.",
   "frontend/src/components/SearchBar.tsx": "Debounced search input component with search icon that triggers search callback after 300ms delay.",
   "frontend/src/components/CategoryFilter.tsx": "Category navigation component displaying buttons for different video categories with active state highlighting.",
-  "frontend/src/pages/Browse.tsx": "Netflix-style homepage with hero banner, videos organized into horizontal scrollable rows grouped by category and genre, category filter, and dark theme throughout.",
+  "frontend/src/pages/Browse.tsx": "Netflix-style homepage with hero banner, videos organized into horizontal scrollable rows grouped by category and genre, with improved loading states that wait for identity initialization and error handling for production debugging.",
   "frontend/src/pages/Watch.tsx": "Netflix-style video watch page with full-width player, video metadata display, favorite/watchlist/download buttons for authenticated users, and horizontal \"More Like This\" row for related videos.",
   "frontend/src/pages/Search.tsx": "Search page with search bar and filtered video results grid with loading and empty states.",
   "frontend/src/pages/Category.tsx": "Category browsing page using VideoRow component for horizontal scrolling presentation of filtered videos with Netflix-style layout, correctly using categoryName route parameter.",
@@ -21,11 +21,11 @@
   "frontend/tailwind.config.js": "Tailwind configuration extended with Netflix-style design tokens including netflix-red color, netflix shadow utilities, custom spacing, and fade-in animations for smooth UI transitions.",
   "frontend/src/utils/youtubeHelpers.ts": "Utility functions for YouTube URL parsing with improved regex and URL parsing to handle various YouTube URL formats including query parameters, extracting video IDs, and generating embed/thumbnail URLs.",
   "frontend/src/pages/AdminUpload.tsx": "Admin-only video upload page with Netflix-style dark theme, admin role verification using useIsCallerAdmin hook, access denied screen for non-admins, support for both YouTube URLs and file uploads with progress tracking, proper ExternalBlob usage, and comprehensive error handling.",
-  "frontend/public/manifest.json": "PWA manifest file defining app metadata, icons, theme colors, and display mode for home screen installation.",
-  "frontend/index.html": "HTML entry point with PWA meta tags including manifest link, theme-color, and apple-touch-icon for iOS support.",
-  "frontend/public/sw.js": "Service worker with mainnet-specific cache version (v3-mainnet) and updated fetch event handler to properly exclude IC mainnet domains (ic0.app, icp0.io, raw.icp0.io) from caching.",
-  "frontend/public/offline.html": "Standalone offline fallback page with dark cinematic theme styling, Saanufox branding, and retry button.",
-  "frontend/src/main.tsx": "Application entry point with React rendering, providers setup, and service worker registration for production builds.",
+  "frontend/public/manifest.json": "PWA manifest with comprehensive installability configuration including start_url, scope, orientation, and four icon variants (standard and maskable in 192x192 and 512x512 sizes) with proper purpose attributes for better platform support.",
+  "frontend/index.html": "HTML entry point with comprehensive PWA meta tags including apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style (black-translucent), theme-color for both light and dark modes, viewport-fit=cover, and apple-touch-icon reference.",
+  "frontend/public/sw.js": "Enhanced service worker (v5-mainnet) with cache-first strategy for images including video thumbnails, stale-while-revalidate for assets, separate cache buckets (static, dynamic, images), and improved cache versioning with cleanup on activation while preserving Internet Identity exclusions.",
+  "frontend/public/offline.html": "Enhanced offline fallback page with Netflix-inspired Saanufox branding, detailed information about available offline features (cached thumbnails, browsed content), animated status indicators, improved visual design with pure black background and Netflix red accents, and fully self-contained inline styles.",
+  "frontend/src/main.tsx": "Application entry point with React rendering, providers setup (QueryClient with optimized defaults, InternetIdentityProvider), and service worker registration for production builds with proper error handling.",
   "frontend/src/pages/Profile.tsx": "User profile page with Netflix-style dark theme displaying user name and principal ID in a card layout with link to settings.",
   "frontend/src/pages/Settings.tsx": "Settings page with Netflix-style dark theme allowing users to update their profile name with proper form handling and toast notifications.",
   "frontend/src/components/HeroBanner.tsx": "Netflix-style hero banner component displaying featured video with cinematic background image, gradient overlays, large title, metadata badges, and Play/More Info buttons.",
@@ -33,5 +33,7 @@
   "frontend/src/utils/fileHelpers.ts": "Utility functions for sanitizing video titles to filesystem-safe filenames and generating proper download filenames with .mp4 extension and fallback patterns.",
   "frontend/src/components/DownloadButton.tsx": "Reusable download button component that triggers video downloads for authenticated users, handles both blob and YouTube videos with loading states, proper filename generation, and toast notifications.",
   "frontend/src/pages/Analytics.tsx": "Admin-only analytics page with Netflix-style dark theme, admin role verification using useIsCallerAdmin hook, access denied screen for non-admins, displaying total registered user count with loading states, error handling, and gradient card design featuring the user count metric.",
-  "frontend/src/hooks/useInternetIdentity.ts": "Internet Identity authentication hook configured for mainnet deployment with identity provider URL set to https://identity.ic0.app for production use."
+  "frontend/src/hooks/useInternetIdentity.ts": "Internet Identity authentication hook configured for mainnet deployment with enhanced logging throughout the authentication flow, proper error handling, and status tracking for debugging production issues.",
+  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook with improved error handling, logging for debugging production issues, proper waiting for identity initialization, and retry logic for failed actor creation.",
+  "frontend/src/components/InstallPrompt.tsx": "PWA install prompt component that listens for beforeinstallprompt event, displays dismissible Netflix-themed banner with gradient header and install/dismiss buttons, stores dismissal preference in localStorage, handles installation flow, and auto-hides when app is already installed or after successful installation."
 }

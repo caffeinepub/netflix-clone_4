@@ -1,13 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Deploy the Saanufox application (Version 17) to Internet Computer mainnet production environment.
+**Goal:** Transform Saanufox into a fully installable Progressive Web App with offline support.
 
 **Planned changes:**
-- Deploy all backend canisters to Internet Computer mainnet
-- Deploy frontend canister to mainnet with production configuration
-- Configure Internet Identity authentication for mainnet
-- Verify service worker and PWA functionality in production
-- Ensure all features (video streaming, authentication, favorites, watchlist) work correctly
+- Update PWA manifest with complete installability requirements (start_url, scope, icons with maskable support)
+- Enhance service worker with offline-first caching strategy for video thumbnails and API responses
+- Add install prompt component to encourage users to install the app to their home screen
+- Add comprehensive PWA meta tags to index.html for enhanced mobile experience
+- Improve offline fallback page with helpful information and Saanufox-branded design
 
-**User-visible outcome:** The Saanufox application will be accessible to users on the Internet Computer mainnet with full functionality including video streaming, user authentication, favorites management, and offline PWA support.
+**User-visible outcome:** Users can install Saanufox as a standalone app on their devices, access cached video content offline, and receive a native app-like experience with smooth installation prompts and offline functionality.
